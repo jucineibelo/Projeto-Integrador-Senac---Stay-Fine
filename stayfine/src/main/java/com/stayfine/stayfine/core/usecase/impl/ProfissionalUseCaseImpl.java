@@ -1,6 +1,7 @@
 package com.stayfine.stayfine.core.usecase.impl;
 
-import com.stayfine.stayfine.core.domain.Profissional;
+import com.stayfine.stayfine.core.domain.entity.Profissional;
+import com.stayfine.stayfine.core.domain.enums.EntityStatus;
 import com.stayfine.stayfine.core.gateway.ProfissionalGateway;
 import com.stayfine.stayfine.core.usecase.ProfissionalUseCase;
 
@@ -23,6 +24,7 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
         }
 
         profissional.setDataRegistro(OffsetDateTime.now());
+        profissional.setStatus(EntityStatus.ATIVO.name());
         return gateway.inserirProfissional(profissional);
     }
 
@@ -36,6 +38,10 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
 
     @Override
     public List<Profissional> buscarProfissionais() {
+
+        if (gateway.buscarProfissionais().isEmpty()) {
+            throw new RuntimeException("A lista está vazia!");
+        }
         return gateway.buscarProfissionais();
     }
 
@@ -50,6 +56,7 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
 
         if (!profissionalData.getNome().equals(profissional.getNome())) {
             profissionalData.setNome(profissional.getNome());
+            profissionalData.setDataAtualizacao(OffsetDateTime.now());
         }
 
         gateway.atualizarProfissional(profissionalData);

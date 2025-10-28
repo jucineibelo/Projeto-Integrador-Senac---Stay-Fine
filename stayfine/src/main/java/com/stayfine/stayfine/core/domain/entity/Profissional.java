@@ -1,4 +1,4 @@
-package com.stayfine.stayfine.core.domain;
+package com.stayfine.stayfine.core.domain.entity;
 
 import java.time.OffsetDateTime;
 
@@ -6,15 +6,17 @@ public class Profissional {
 
     private Long id;
     private String nome;
+    private String status;
     private OffsetDateTime dataRegistro;
     private OffsetDateTime dataAtualizacao;
 
     public Profissional() {
     }
 
-    public Profissional(Long id, String nome, OffsetDateTime dataRegistro, OffsetDateTime dataAtualizacao) {
+    public Profissional(Long id, String nome, String status, OffsetDateTime dataRegistro, OffsetDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
+        this.status = status;
         this.dataRegistro = dataRegistro;
         this.dataAtualizacao = dataAtualizacao;
     }
@@ -29,6 +31,14 @@ public class Profissional {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public OffsetDateTime getDataRegistro() {
