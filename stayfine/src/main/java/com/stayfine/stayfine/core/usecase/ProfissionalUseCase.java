@@ -1,6 +1,6 @@
 package com.stayfine.stayfine.core.usecase;
 
-import com.stayfine.stayfine.core.domain.Profissional;
+import com.stayfine.stayfine.core.domain.entity.Profissional;
 import java.util.List;
 
 public interface ProfissionalUseCase {
@@ -14,5 +14,5 @@ public interface ProfissionalUseCase {
 //Define os casos de uso e a lógica de negócios relacionada às operações realizadas com objetos do tipo Profissional.
 //Responsabilidades:
 //Orquestração da Lógica de Negócio: Métodos que representam ações específicas que os usuários ou sistemas podem realizar
-// sobre os dados do aluno, implementando regras de negócio.
+// sobre os dados do profissional, implementando regras de negócio.
 //Validações e Regras: Pode incluir lógica para validar dados de entrada antes de interagir com a camada de dados.

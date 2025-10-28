@@ -1,6 +1,6 @@
 package com.stayfine.stayfine.core.gateway;
 
-import com.stayfine.stayfine.core.domain.Profissional;
+import com.stayfine.stayfine.core.domain.entity.Profissional;
 
 import java.util.List;
 
