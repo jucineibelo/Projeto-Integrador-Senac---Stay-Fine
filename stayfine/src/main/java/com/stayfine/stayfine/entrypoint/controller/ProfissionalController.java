@@ -1,26 +1,50 @@
 package com.stayfine.stayfine.entrypoint.controller;
 
 import com.stayfine.stayfine.core.domain.entity.Profissional;
+import com.stayfine.stayfine.core.usecase.ProfissionalUseCase;
 import com.stayfine.stayfine.infrastructure.dataprovider.service.ProfissionalService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/profissional")
+@RequestMapping("/profissionais")
 public class ProfissionalController {
 
-    private final ProfissionalService service;
+    private final ProfissionalUseCase profissionalUseCase;
 
-    public ProfissionalController(ProfissionalService service) {
-        this.service = service;
+    public ProfissionalController(ProfissionalUseCase profissionalUseCase) {
+        this.profissionalUseCase = profissionalUseCase;
     }
 
-    public ResponseEntity<Profissional> inserirProfissional(@RequestBody Profissional profissional) {
-        Profissional profissionalSaved = service.inserirProfissional(profissional);
-        return ResponseEntity.status(HttpStatus.OK).body(profissionalSaved);
+    @PostMapping
+    public ResponseEntity<Profissional> criar(@RequestBody Profissional profissional) {
+        Profissional salvo = profissionalUseCase.inserirProfissional(profissional);
+        return ResponseEntity.ok(salvo);
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Profissional> buscarId(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(profissionalUseCase.buscarProfissional(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Profissional>> listarTodos() {
+        return ResponseEntity.status(HttpStatus.OK).body(profissionalUseCase.buscarProfissionais());
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Profissional> atualizarProfissional(@PathVariable Long id, @RequestBody Profissional profissional) {
+        return ResponseEntity.status(HttpStatus.OK).body(profissionalUseCase.atualizarProfissional(id, profissional));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> excluirProfissional(@PathVariable Long id) {
+        profissionalUseCase.excluirProfissional(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 
 }

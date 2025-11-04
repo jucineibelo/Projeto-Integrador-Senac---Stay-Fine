@@ -46,20 +46,20 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
     }
 
     @Override
-    public void atualizarProfissional(Profissional profissional) {
+    public Profissional atualizarProfissional(Long id, Profissional profissional) {
 
-        if (profissional == null) {
-            throw new RuntimeException("Profissonal não encontrado");
+        if (id == null) {
+            throw new RuntimeException("id está vazio");
         }
 
-        Profissional profissionalData = buscarProfissional(profissional.getId());
+        Profissional profissionalData = buscarProfissional(id);
 
         if (!profissionalData.getNome().equals(profissional.getNome())) {
             profissionalData.setNome(profissional.getNome());
             profissionalData.setDataAtualizacao(OffsetDateTime.now());
         }
 
-        gateway.atualizarProfissional(profissionalData);
+        return gateway.atualizarProfissional(id, profissionalData);
     }
 
     @Override

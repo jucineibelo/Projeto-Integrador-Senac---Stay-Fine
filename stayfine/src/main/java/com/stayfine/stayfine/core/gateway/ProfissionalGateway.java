@@ -9,7 +9,7 @@ public interface ProfissionalGateway {
     Profissional inserirProfissional(Profissional profissional);
     Profissional buscarProfissional(Long id);
     List<Profissional> buscarProfissionais();
-    void atualizarProfissional(Profissional profissional);
+    Profissional atualizarProfissional(Long id, Profissional profissional);
     void excluirProfissional(Long id);
 }
 

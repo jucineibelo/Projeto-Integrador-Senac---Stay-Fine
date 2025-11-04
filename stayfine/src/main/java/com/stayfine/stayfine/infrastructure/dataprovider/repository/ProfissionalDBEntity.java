@@ -16,7 +16,6 @@ public class ProfissionalDBEntity {
     private String nome;
 
     @Column(name = "status")
-    @Enumerated(EnumType.STRING )
     private String status;
 
     @Column(name = "data_registro")

@@ -1,8 +1,8 @@
-package com.stayfine.stayfine.core.domain.entity;
+package com.stayfine.stayfine.entrypoint.dto;
 
 import java.time.OffsetDateTime;
 
-public class Profissional {
+public class ProfissionalResponse {
 
     private Long id;
     private String nome;
@@ -10,10 +10,10 @@ public class Profissional {
     private OffsetDateTime dataRegistro;
     private OffsetDateTime dataAtualizacao;
 
-    public Profissional() {
+    public ProfissionalResponse() {
     }
 
-    public Profissional(Long id, String nome, String status, OffsetDateTime dataRegistro, OffsetDateTime dataAtualizacao) {
+    public ProfissionalResponse(Long id, String nome, String status, OffsetDateTime dataRegistro, OffsetDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.status = status;
