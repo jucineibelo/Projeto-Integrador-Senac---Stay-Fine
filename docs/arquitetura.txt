@@ -1,0 +1,36 @@
+stayfine
+├── configuration                     # Beans/Configs (ex: UseCaseConfig)
+│
+├── core                              # Regras de negócio (domínio puro)
+│   ├── domain
+│   │   ├── model                     # Entidades de domínio
+│   │   │   └── Profissional.java
+│   │   └── enums                     # Enumerações do domínio
+│   │       └── DomainStatus.java
+│   │
+│   ├── gateway                       # Portas de entrada/saída (interfaces)
+│   │   └── ProfissionalGateway.java
+│   │
+│   └── usecase                       # Casos de uso
+│       ├── ProfissionalUseCase.java  # Interface dos casos de uso
+│       └── impl
+│           └── ProfissionalUseCaseImpl.java
+│
+├── entrypoint                        # Entrada da aplicação
+│   ├── controller                    # Controllers (REST)
+│   │   └── ProfissionalController.java
+│   └── dto                           # Transporte entre API e domínio
+│       ├── ProfissionalRequest.java
+│       └── ProfissionalResponse.java
+│
+└── infrastructure                    # Implementações técnicas
+    ├── adapter                       # Adaptadores (implementam os Gateways)
+    │   └── ProfissionalPersistenceAdapter.java
+    │
+    └── database                      # Infra de persistência (DB)
+        ├── entity                    # Entidades de banco
+        │   └── ProfissionalDBEntity.java
+        ├── repository                # JPA/Spring Data
+        │   └── ProfissionalRepository.java
+        └── mapper                    # Conversão Domain ↔ Entity DB
+            └── ProfissionalMapper.java

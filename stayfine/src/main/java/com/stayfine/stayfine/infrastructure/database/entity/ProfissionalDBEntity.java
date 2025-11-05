@@ -1,19 +1,33 @@
-package com.stayfine.stayfine.core.domain.entity;
+package com.stayfine.stayfine.infrastructure.database.entity;
+
+import jakarta.persistence.*;
 
 import java.time.OffsetDateTime;
 
-public class Profissional {
+@Entity
+@Table(name = "profissional")
+public class ProfissionalDBEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "nome")
     private String nome;
+
+    @Column(name = "status")
     private String status;
+
+    @Column(name = "data_registro")
     private OffsetDateTime dataRegistro;
+
+    @Column(name = "data_atualizacao")
     private OffsetDateTime dataAtualizacao;
 
-    public Profissional() {
+    public ProfissionalDBEntity() {
     }
 
-    public Profissional(Long id, String nome, String status, OffsetDateTime dataRegistro, OffsetDateTime dataAtualizacao) {
+    public ProfissionalDBEntity(Long id, String nome, String status, OffsetDateTime dataRegistro, OffsetDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.status = status;

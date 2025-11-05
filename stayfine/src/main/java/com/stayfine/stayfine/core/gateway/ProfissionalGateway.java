@@ -1,15 +1,19 @@
 package com.stayfine.stayfine.core.gateway;
 
-import com.stayfine.stayfine.core.domain.entity.Profissional;
+import com.stayfine.stayfine.core.domain.model.Profissional;
 
 import java.util.List;
 
 public interface ProfissionalGateway {
 
     Profissional inserirProfissional(Profissional profissional);
+
     Profissional buscarProfissional(Long id);
+
     List<Profissional> buscarProfissionais();
+
     Profissional atualizarProfissional(Long id, Profissional profissional);
+
     void excluirProfissional(Long id);
 }
 

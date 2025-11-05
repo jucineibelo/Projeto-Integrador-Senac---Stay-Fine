@@ -9,8 +9,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UseCaseConfig {
 
-@Bean
+    @Bean
     public ProfissionalUseCase profissionalUseCaseImpl(ProfissionalGateway profissionalGateway) {
         return new ProfissionalUseCaseImpl(profissionalGateway);
     }
+
 }

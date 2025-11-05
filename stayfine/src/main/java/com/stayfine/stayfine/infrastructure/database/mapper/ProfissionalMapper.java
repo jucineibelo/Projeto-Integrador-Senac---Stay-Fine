@@ -1,7 +1,7 @@
-package com.stayfine.stayfine.infrastructure.dataprovider.mapper;
+package com.stayfine.stayfine.infrastructure.database.mapper;
 
-import com.stayfine.stayfine.core.domain.entity.Profissional;
-import com.stayfine.stayfine.infrastructure.dataprovider.repository.ProfissionalDBEntity;
+import com.stayfine.stayfine.core.domain.model.Profissional;
+import com.stayfine.stayfine.infrastructure.database.entity.ProfissionalDBEntity;
 
 public class ProfissionalMapper {
 
@@ -10,7 +10,7 @@ public class ProfissionalMapper {
                 domain.getId(),
                 domain.getNome(),
                 domain.getStatus(),
-                domain.getDataRegistro(),
+                domain.getDataCadastro(),
                 domain.getDataAtualizacao()
         );
     }
