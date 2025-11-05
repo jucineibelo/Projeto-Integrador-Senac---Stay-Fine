@@ -1,6 +1,6 @@
 package com.stayfine.stayfine.core.usecase;
 
-import com.stayfine.stayfine.core.domain.entity.Profissional;
+import com.stayfine.stayfine.core.domain.model.Profissional;
 import java.util.List;
 
 public interface ProfissionalUseCase {

@@ -1,7 +1,7 @@
 package com.stayfine.stayfine.core.usecase.impl;
 
-import com.stayfine.stayfine.core.domain.entity.Profissional;
-import com.stayfine.stayfine.core.domain.enums.EntityStatus;
+import com.stayfine.stayfine.core.domain.model.Profissional;
+import com.stayfine.stayfine.core.domain.enums.DomainStatus;
 import com.stayfine.stayfine.core.gateway.ProfissionalGateway;
 import com.stayfine.stayfine.core.usecase.ProfissionalUseCase;
 
@@ -23,8 +23,8 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
             throw new RuntimeException("Profissonal vazio");
         }
 
-        profissional.setDataRegistro(OffsetDateTime.now());
-        profissional.setStatus(EntityStatus.ATIVO.name());
+        profissional.setDataCadastro(OffsetDateTime.now());
+        profissional.setStatus(DomainStatus.ATIVO.name());
         return gateway.inserirProfissional(profissional);
     }
 

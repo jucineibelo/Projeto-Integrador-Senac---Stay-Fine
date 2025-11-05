@@ -1,38 +1,28 @@
-package com.stayfine.stayfine.infrastructure.dataprovider.repository;
-
-import jakarta.persistence.*;
+package com.stayfine.stayfine.core.domain.model;
 
 import java.time.OffsetDateTime;
 
-@Entity
-@Table(name = "profissional")
-public class ProfissionalDBEntity {
+public class Profissional {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "nome")
     private String nome;
-
-    @Column(name = "status")
     private String status;
-
-    @Column(name = "data_registro")
-    private OffsetDateTime dataRegistro;
-
-    @Column(name = "data_atualizacao")
+    private OffsetDateTime dataCadastro;
     private OffsetDateTime dataAtualizacao;
 
-    public ProfissionalDBEntity() {
+    public Profissional() {
     }
 
-    public ProfissionalDBEntity(Long id, String nome, String status, OffsetDateTime dataRegistro, OffsetDateTime dataAtualizacao) {
+    public Profissional(Long id, String nome, String status, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.status = status;
-        this.dataRegistro = dataRegistro;
+        this.dataCadastro = dataCadastro;
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public Profissional( String nome) {
+        this.nome = nome;
     }
 
     public Long getId() {
@@ -59,12 +49,12 @@ public class ProfissionalDBEntity {
         this.status = status;
     }
 
-    public OffsetDateTime getDataRegistro() {
-        return dataRegistro;
+    public OffsetDateTime getDataCadastro() {
+        return dataCadastro;
     }
 
-    public void setDataRegistro(OffsetDateTime dataRegistro) {
-        this.dataRegistro = dataRegistro;
+    public void setDataCadastro(OffsetDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 
     public OffsetDateTime getDataAtualizacao() {

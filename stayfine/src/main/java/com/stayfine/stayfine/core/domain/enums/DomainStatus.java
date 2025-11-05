@@ -1,6 +1,6 @@
 package com.stayfine.stayfine.core.domain.enums;
 
-public enum EntityStatus {
+public enum DomainStatus {
     ATIVO,
     INATIVO,
     EXCLUIDO

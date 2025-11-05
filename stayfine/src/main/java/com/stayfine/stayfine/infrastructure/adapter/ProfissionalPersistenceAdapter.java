@@ -1,11 +1,11 @@
 
-package com.stayfine.stayfine.infrastructure.dataprovider.service;
+package com.stayfine.stayfine.infrastructure.adapter;
 
-import com.stayfine.stayfine.core.domain.entity.Profissional;
+import com.stayfine.stayfine.core.domain.model.Profissional;
 import com.stayfine.stayfine.core.gateway.ProfissionalGateway;
-import com.stayfine.stayfine.infrastructure.dataprovider.mapper.ProfissionalMapper;
-import com.stayfine.stayfine.infrastructure.dataprovider.repository.ProfissionalDBEntity;
-import com.stayfine.stayfine.infrastructure.dataprovider.repository.ProfissionalRepository;
+import com.stayfine.stayfine.infrastructure.database.mapper.ProfissionalMapper;
+import com.stayfine.stayfine.infrastructure.database.entity.ProfissionalDBEntity;
+import com.stayfine.stayfine.infrastructure.database.repository.ProfissionalRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,23 +15,23 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.stayfine.stayfine.core.domain.enums.EntityStatus.EXCLUIDO;
+import static com.stayfine.stayfine.core.domain.enums.DomainStatus.EXCLUIDO;
 
 @Service
-public class ProfissionalService implements ProfissionalGateway {
+public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
 
     private final ProfissionalRepository repository;
-    private final Logger log = LoggerFactory.getLogger(ProfissionalService.class);
+    private final Logger log = LoggerFactory.getLogger(ProfissionalPersistenceAdapter.class);
 
-    public ProfissionalService(ProfissionalRepository repository) {
+    public ProfissionalPersistenceAdapter(ProfissionalRepository repository) {
         this.repository = repository;
     }
 
     @Override
     @Transactional
     public Profissional inserirProfissional(Profissional profissional) {
-        if (profissional.getDataRegistro() == null) {
-            profissional.setDataRegistro(OffsetDateTime.now());
+        if (profissional.getDataCadastro() == null) {
+            profissional.setDataCadastro(OffsetDateTime.now());
         }
 
         ProfissionalDBEntity profissionalDB = ProfissionalMapper.toDbEntity(profissional);
