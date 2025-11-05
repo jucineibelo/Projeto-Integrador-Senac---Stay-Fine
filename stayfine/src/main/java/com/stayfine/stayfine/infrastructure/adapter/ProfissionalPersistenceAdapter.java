@@ -30,10 +30,6 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
     @Override
     @Transactional
     public Profissional inserirProfissional(Profissional profissional) {
-        if (profissional.getDataCadastro() == null) {
-            profissional.setDataCadastro(OffsetDateTime.now());
-        }
-
         ProfissionalDBEntity profissionalDB = ProfissionalMapper.toDbEntity(profissional);
         ProfissionalDBEntity saved = repository.save(profissionalDB);
         log.debug("Profissional salvo id={}", saved.getId());
@@ -62,10 +58,6 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
         ProfissionalDBEntity profissionalDB = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Profissional " + id + " não encontrado"));
 
-        if (profissional.getNome() != null && !profissional.getNome().equals(profissionalDB.getNome())) {
-            profissionalDB.setNome(profissional.getNome());
-        }
-
         profissionalDB.setDataAtualizacao(OffsetDateTime.now());
         ProfissionalDBEntity saved = repository.save(profissionalDB);
         log.debug("Profissional atualizado id={}", saved.getId());
@@ -78,8 +70,9 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
         ProfissionalDBEntity profissionalDB = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Profissional " + id + " não encontrado"));
 
-        profissionalDB.setStatus(EXCLUIDO.name());
         repository.save(profissionalDB);
         log.debug("Profissional marcado como EXCLUIDO id={}", id);
     }
 }
+
+//somente persistir

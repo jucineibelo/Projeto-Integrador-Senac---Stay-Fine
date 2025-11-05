@@ -48,26 +48,32 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
     @Override
     public Profissional atualizarProfissional(Long id, Profissional profissional) {
 
-        if (id == null) {
-            throw new RuntimeException("id está vazio");
+        if (id == null || profissional == null) {
+            throw new RuntimeException("Profissional ou id está vazio");
         }
 
-        Profissional profissionalData = buscarProfissional(id);
+        Profissional profissionalExistente = buscarProfissional(id);
 
-        if (!profissionalData.getNome().equals(profissional.getNome())) {
-            profissionalData.setNome(profissional.getNome());
-            profissionalData.setDataAtualizacao(OffsetDateTime.now());
+        if (profissional.getNome() != null
+                && !profissional.getNome().isBlank()
+                && !profissionalExistente.getNome().equals(profissional.getNome())) {
+
+            profissionalExistente.setNome(profissional.getNome());
+            profissionalExistente.setDataAtualizacao(OffsetDateTime.now());
         }
 
-        return gateway.atualizarProfissional(id, profissionalData);
+        return gateway.atualizarProfissional(id, profissionalExistente);
     }
+
 
     @Override
     public void excluirProfissional(Long id) {
         if (id == null) {
-            throw new RuntimeException("Profissional não encontrado");
+            throw new RuntimeException("Id invalido");
         }
 
-        gateway.excluirProfissional(id);
+        Profissional profissional = buscarProfissional(id);
+        profissional.setStatus(DomainStatus.EXCLUIDO.name());
+        gateway.excluirProfissional(profissional.getId());
     }
 }
