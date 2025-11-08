@@ -2,11 +2,14 @@ package com.stayfine.stayfine.core.usecase.impl;
 
 import com.stayfine.stayfine.core.domain.model.Profissional;
 import com.stayfine.stayfine.core.domain.enums.DomainStatus;
+import com.stayfine.stayfine.core.exceptions.DomainException;
 import com.stayfine.stayfine.core.gateway.ProfissionalGateway;
 import com.stayfine.stayfine.core.usecase.ProfissionalUseCase;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+
+import static com.stayfine.stayfine.core.util.DomainUtil.deveAtualizar;
 
 public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
 
@@ -20,7 +23,7 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
     public Profissional inserirProfissional(Profissional profissional) {
 
         if (profissional == null) {
-            throw new RuntimeException("Profissonal vazio");
+            throw new DomainException("Profissonal vazio");
         }
 
         profissional.setDataCadastro(OffsetDateTime.now());
@@ -31,7 +34,7 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
     @Override
     public Profissional buscarProfissional(Long id) {
         if (id == null) {
-            throw new RuntimeException(id + " Registro não encontrado.");
+            throw new DomainException(id + " Registro não informado.");
         }
         return gateway.buscarProfissional(id);
     }
@@ -40,7 +43,7 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
     public List<Profissional> buscarProfissionais() {
 
         if (gateway.buscarProfissionais().isEmpty()) {
-            throw new RuntimeException("A lista está vazia!");
+            throw new DomainException("A lista está vazia!");
         }
         return gateway.buscarProfissionais();
     }
@@ -49,15 +52,12 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
     public Profissional atualizarProfissional(Long id, Profissional profissional) {
 
         if (id == null || profissional == null) {
-            throw new RuntimeException("Profissional ou id está vazio");
+            throw new DomainException("Profissional ou id está vazio");
         }
 
         Profissional profissionalExistente = buscarProfissional(id);
 
-        if (profissional.getNome() != null
-                && !profissional.getNome().isBlank()
-                && !profissionalExistente.getNome().equals(profissional.getNome())) {
-
+        if (deveAtualizar(profissional.getNome(), profissionalExistente.getNome())){
             profissionalExistente.setNome(profissional.getNome());
             profissionalExistente.setDataAtualizacao(OffsetDateTime.now());
         }
@@ -68,12 +68,8 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
 
     @Override
     public void excluirProfissional(Long id) {
-        if (id == null) {
-            throw new RuntimeException("Id invalido");
-        }
-
-        Profissional profissional = buscarProfissional(id);
-        profissional.setStatus(DomainStatus.EXCLUIDO.name());
-        gateway.excluirProfissional(profissional.getId());
+        Profissional buscarProfissional = buscarProfissional(id);
+        buscarProfissional.setStatus(DomainStatus.EXCLUIDO.name());
+        gateway.excluirProfissional(buscarProfissional.getId());
     }
 }
