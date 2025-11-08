@@ -2,11 +2,13 @@ package com.stayfine.stayfine.core.usecase.impl;
 
 import com.stayfine.stayfine.core.domain.enums.DomainStatus;
 import com.stayfine.stayfine.core.domain.model.Pessoa;
+import com.stayfine.stayfine.core.exceptions.DomainException;
 import com.stayfine.stayfine.core.gateway.PessoaGateway;
 import com.stayfine.stayfine.core.usecase.PessoaUseCase;
-
 import java.time.OffsetDateTime;
 import java.util.List;
+
+import static com.stayfine.stayfine.core.util.DomainUtil.deveAtualizar;
 
 public class PessoaUseCaseImpl implements PessoaUseCase {
 
@@ -19,7 +21,7 @@ public class PessoaUseCaseImpl implements PessoaUseCase {
     @Override
     public Pessoa inserirPessoa(Pessoa pessoa) {
         if (pessoa == null) {
-            throw new RuntimeException("Pessoa está vazia");
+            throw new DomainException("Pessoa está vazia");
         }
 
         pessoa.setDataCadastro(OffsetDateTime.now());
@@ -30,7 +32,7 @@ public class PessoaUseCaseImpl implements PessoaUseCase {
     @Override
     public Pessoa buscarPessoa(Long id) {
         if (id == null) {
-            throw new RuntimeException("Id vazio");
+            throw new DomainException("Id vazio");
         }
         return gateway.buscarPessoa(id);
     }
@@ -43,38 +45,28 @@ public class PessoaUseCaseImpl implements PessoaUseCase {
     @Override
     public Pessoa atualizarPessoa(Long id, Pessoa pessoa) {
         if (id == null || pessoa == null) {
-            throw new RuntimeException("Pessoa ou id está vazio");
+            throw new DomainException("Pessoa ou id está vazio");
         }
 
         Pessoa pessoaExistente = buscarPessoa(id);
 
-        if (pessoa.getNome() != null
-                && !pessoa.getNome().isBlank()
-                && !pessoaExistente.getNome().equals(pessoa.getNome())) {
+        if (deveAtualizar(pessoa.getNome(), pessoaExistente.getNome())) {
             pessoaExistente.setNome(pessoa.getNome());
         }
 
-        if (pessoa.getEmail() != null
-                && !pessoa.getEmail().isBlank()
-                && !pessoaExistente.getEmail().equals(pessoa.getEmail())) {
+        if (deveAtualizar(pessoa.getEmail(), pessoaExistente.getEmail())) {
             pessoaExistente.setEmail(pessoa.getEmail());
         }
 
-        if (pessoa.getTelefone() != null
-                && !pessoa.getTelefone().isBlank()
-                && !pessoaExistente.getTelefone().equals(pessoa.getTelefone())) {
+        if (deveAtualizar(pessoa.getTelefone(), pessoaExistente.getTelefone())) {
             pessoaExistente.setTelefone(pessoa.getTelefone());
         }
 
-        if (pessoa.getUsername() != null
-                && !pessoa.getUsername().isBlank()
-                && !pessoaExistente.getUsername().equals(pessoa.getUsername())) {
+        if (deveAtualizar(pessoa.getUsername(), pessoaExistente.getUsername())) {
             pessoaExistente.setUsername(pessoa.getUsername());
         }
 
-        if (pessoa.getPassword() != null
-                && !pessoa.getPassword().isBlank()
-                && !pessoaExistente.getPassword().equals(pessoa.getPassword())) {
+        if (deveAtualizar(pessoa.getPassword(), pessoaExistente.getPassword())){
             pessoaExistente.setPassword(pessoa.getPassword());
         }
 
@@ -82,15 +74,18 @@ public class PessoaUseCaseImpl implements PessoaUseCase {
         return gateway.atualizarPessoa(id, pessoaExistente);
     }
 
+
     @Override
     public void excluirPessoa(Long id) {
 
         if (id == null) {
-            throw new RuntimeException("Id ivalido");
+            throw new DomainException("Id ivalido");
         }
 
         Pessoa pessoaExistente = buscarPessoa(id);
         pessoaExistente.setStatus(DomainStatus.EXCLUIDO.name());
         gateway.excluirPessoa(pessoaExistente.getId());
     }
+
+
 }
