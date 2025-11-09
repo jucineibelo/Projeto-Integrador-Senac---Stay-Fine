@@ -24,8 +24,8 @@ public class PessoaDBEntity {
     @Column(name = "telefone")
     private String telefone;
 
-    @Column(name = "data_registro")
-    private OffsetDateTime dataRegistro;
+    @Column(name = "data_cadastro")
+    private OffsetDateTime dataCadastro;
 
     @Column(name = "data_atualizacao")
     private OffsetDateTime dataAtualizacao;
@@ -40,14 +40,14 @@ public class PessoaDBEntity {
     }
 
     public PessoaDBEntity(Long id, String nome, String status, String email, String telefone,
-                          OffsetDateTime dataRegistro, OffsetDateTime dataAtualizacao, String username,
+                          OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String username,
                           String password) {
         this.id = id;
         this.nome = nome;
         this.status = status;
         this.email = email;
         this.telefone = telefone;
-        this.dataRegistro = dataRegistro;
+        this.dataCadastro = dataCadastro;
         this.dataAtualizacao = dataAtualizacao;
         this.username = username;
         this.password = password;
@@ -93,12 +93,12 @@ public class PessoaDBEntity {
         this.telefone = telefone;
     }
 
-    public OffsetDateTime getDataRegistro() {
-        return dataRegistro;
+    public OffsetDateTime getDataCadastro() {
+        return dataCadastro;
     }
 
-    public void setDataRegistro(OffsetDateTime dataRegistro) {
-        this.dataRegistro = dataRegistro;
+    public void setDataCadastro(OffsetDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 
     public OffsetDateTime getDataAtualizacao() {
