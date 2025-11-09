@@ -13,5 +13,5 @@ public interface ProdutoUseCase {
 
     Produto atualizarProduto(Long id, Produto produto);
 
-    void excluirProduto();
+    void excluirProduto(Long id);
 }

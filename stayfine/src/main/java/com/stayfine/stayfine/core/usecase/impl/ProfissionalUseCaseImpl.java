@@ -68,8 +68,14 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
 
     @Override
     public void excluirProfissional(Long id) {
+
+        if (id == null) {
+            throw new DomainException("O código está vazio");
+        }
+
         Profissional buscarProfissional = buscarProfissional(id);
         buscarProfissional.setStatus(DomainStatus.EXCLUIDO.name());
+        buscarProfissional.setDataAtualizacao(OffsetDateTime.now());
         gateway.excluirProfissional(buscarProfissional.getId());
     }
 }
