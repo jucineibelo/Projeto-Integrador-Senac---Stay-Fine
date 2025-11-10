@@ -6,6 +6,7 @@ import com.stayfine.stayfine.core.gateway.ProfissionalGateway;
 import com.stayfine.stayfine.infrastructure.database.mapper.ProfissionalMapper;
 import com.stayfine.stayfine.infrastructure.database.entity.ProfissionalDBEntity;
 import com.stayfine.stayfine.infrastructure.database.repository.ProfissionalRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
     @Override
     public Profissional buscarProfissional(Long id) {
         ProfissionalDBEntity profissionalDB = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profissional " + id + " não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Profissional " + id + " não encontrado na base de dados"));
 
         return ProfissionalMapper.toDomain(profissionalDB);
     }
@@ -56,9 +57,9 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
     @Transactional
     public Profissional atualizarProfissional(Long id, Profissional profissional) {
         ProfissionalDBEntity profissionalDB = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profissional " + id + " não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Profissional " + id + " não encontrado para atualização."));
 
-        profissionalDB.setDataAtualizacao(OffsetDateTime.now());
+        profissionalDB.setId(profissional.getId());
         ProfissionalDBEntity saved = repository.save(profissionalDB);
         log.debug("Profissional atualizado id={}", saved.getId());
         return ProfissionalMapper.toDomain(saved);
@@ -68,7 +69,7 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
     @Transactional
     public void excluirProfissional(Long id) {
         ProfissionalDBEntity profissionalDB = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profissional " + id + " não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Profissional " + id + " não encontrado para exclusão."));
 
         repository.save(profissionalDB);
         log.debug("Profissional marcado como EXCLUIDO id={}", id);
