@@ -8,7 +8,7 @@ public class Agendamento {
     private OffsetDateTime dataCadastro;
     private OffsetDateTime dataAtualizacao;
     private String status;
-    private Pessoa pessoa;
+    private Cliente cliente;
     private Pagamento pagamento;
     private Profissional profissional;
     private List<Produto> produtos;
@@ -18,13 +18,13 @@ public class Agendamento {
     }
 
     public Agendamento(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String status,
-                       Pessoa pessoa, Pagamento pagamento, Profissional profissional, List<Produto> produtos,
+                       Cliente cliente, Pagamento pagamento, Profissional profissional, List<Produto> produtos,
                        OffsetDateTime dataAgendamento) {
         this.id = id;
         this.dataCadastro = dataCadastro;
         this.dataAtualizacao = dataAtualizacao;
         this.status = status;
-        this.pessoa = pessoa;
+        this.cliente = cliente;
         this.pagamento = pagamento;
         this.profissional = profissional;
         this.produtos = produtos;
@@ -63,12 +63,12 @@ public class Agendamento {
         this.status = status;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Cliente getPessoa() {
+        return cliente;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setPessoa(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public Pagamento getPagamento() {

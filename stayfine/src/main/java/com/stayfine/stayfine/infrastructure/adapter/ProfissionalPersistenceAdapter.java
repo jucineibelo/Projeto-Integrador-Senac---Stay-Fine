@@ -41,7 +41,7 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
     @Override
     public Profissional buscarProfissional(Long id) {
         ProfissionalDBEntity profissionalDB = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profissional " + id + " não encontrado na base de dados"));
+                .orElseThrow(() -> new EntityNotFoundException("Profissional " + id + " não encontrado na base de dados"));
 
         return ProfissionalMapper.toDomain(profissionalDB);
     }

@@ -2,7 +2,7 @@ package com.stayfine.stayfine.core.domain.model;
 
 import java.time.OffsetDateTime;
 
-public class Pessoa {
+public class Cliente {
     private Long id;
     private String nome;
     private String email;
@@ -13,11 +13,11 @@ public class Pessoa {
     private String username;
     private String password;
 
-    public Pessoa() {
+    public Cliente() {
     }
 
-    public Pessoa(Long id, String nome, String email, String telefone, OffsetDateTime dataCadastro,
-                  OffsetDateTime dataAtualizacao, String status, String username, String password) {
+    public Cliente(Long id, String nome, String email, String telefone, OffsetDateTime dataCadastro,
+                   OffsetDateTime dataAtualizacao, String status, String username, String password) {
         this.id = id;
         this.nome = nome;
         this.email = email;

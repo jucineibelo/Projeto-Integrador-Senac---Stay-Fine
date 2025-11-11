@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "pessoa")
-public class PessoaDBEntity {
+@Table(name = "cliente")
+public class ClienteDBEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,12 +36,12 @@ public class PessoaDBEntity {
     @Column(name = "password")
     private String password;
 
-    public PessoaDBEntity() {
+    public ClienteDBEntity() {
     }
 
-    public PessoaDBEntity(Long id, String nome, String status, String email, String telefone,
-                          OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String username,
-                          String password) {
+    public ClienteDBEntity(Long id, String nome, String status, String email, String telefone,
+                           OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String username,
+                           String password) {
         this.id = id;
         this.nome = nome;
         this.status = status;
