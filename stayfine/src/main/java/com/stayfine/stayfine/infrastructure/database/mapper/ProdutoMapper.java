@@ -5,7 +5,7 @@ import com.stayfine.stayfine.infrastructure.database.entity.ProdutoDBEntity;
 
 public class ProdutoMapper {
 
-    public ProdutoDBEntity toDbEntity(Produto produto) {
+    public static ProdutoDBEntity toDbEntity(Produto produto) {
         return new ProdutoDBEntity(
                 produto.getId(),
                 produto.getDescricao(),
@@ -15,7 +15,7 @@ public class ProdutoMapper {
                 produto.getStatus());
     }
 
-    public Produto toDomain(ProdutoDBEntity produtoDBEntity) {
+    public static Produto toDomain(ProdutoDBEntity produtoDBEntity) {
         return new Produto(
                 produtoDBEntity.getId(),
                 produtoDBEntity.getDescricao(),

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.stayfine.stayfine.core.domain.enums.DomainStatus.EXCLUIDO;
+import static com.stayfine.stayfine.infrastructure.database.mapper.ProfissionalMapper.toDomain;
 
 @Service
 public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
@@ -35,7 +36,7 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
         ProfissionalDBEntity saved = repository.save(profissionalDB);
         log.debug("Profissional salvo id={}", saved.getId());
 
-        return ProfissionalMapper.toDomain(saved);
+        return toDomain(saved);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
         ProfissionalDBEntity profissionalDB = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Profissional " + id + " não encontrado na base de dados"));
 
-        return ProfissionalMapper.toDomain(profissionalDB);
+        return toDomain(profissionalDB);
     }
 
     @Override
@@ -53,16 +54,18 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
                 .collect(Collectors.toList());
     }
 
-    @Override
     @Transactional
     public Profissional atualizarProfissional(Long id, Profissional profissional) {
-        ProfissionalDBEntity profissionalDB = repository.findById(id)
+        ProfissionalDBEntity entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Profissional " + id + " não encontrado para atualização."));
 
-        profissionalDB.setId(profissional.getId());
-        ProfissionalDBEntity saved = repository.save(profissionalDB);
-        log.debug("Profissional atualizado id={}", saved.getId());
-        return ProfissionalMapper.toDomain(saved);
+        entity.setNome(profissional.getNome());
+        entity.setStatus(profissional.getStatus());
+        entity.setDataAtualizacao(profissional.getDataAtualizacao());
+
+        ProfissionalDBEntity salvo = repository.save(entity);
+        log.debug("Profissional atualizado id={}", salvo.getId());
+        return toDomain(salvo);
     }
 
     @Override
