@@ -35,7 +35,7 @@ public class ProdutoPersistenceAdapter implements ProdutoGateway {
     public Produto buscarProduto(Long id) {
 
         ProdutoDBEntity produtoDB = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException(id + " Produto não encontrado na base de dados");
+                .orElseThrow(() -> new RuntimeException(id + " Produto não encontrado na base de dados"));
 
         return mapper.toDomain(produtoDB);
     }
