@@ -11,44 +11,44 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.stayfine.stayfine.entrypoint.mapper.ProfissionalDtoMapper.*;
+
 @RestController
 @RequestMapping("/profissionais")
 public class ProfissionalController {
 
     private final ProfissionalUseCase profissionalUseCase;
-    private final ProfissionalDtoMapper mapper;
 
-    public ProfissionalController(ProfissionalUseCase profissionalUseCase, ProfissionalDtoMapper mapper) {
+    public ProfissionalController(ProfissionalUseCase profissionalUseCase) {
         this.profissionalUseCase = profissionalUseCase;
-        this.mapper = mapper;
     }
 
     @PostMapping
-    public ResponseEntity<ProfissionalResponse> criar(@RequestBody ProfissionalRequest request) {
-        Profissional salvo = profissionalUseCase.inserirProfissional(mapper.requestToDomain(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.domainToResponse(salvo));
+    public ResponseEntity<ProfissionalResponse> inserir(@RequestBody ProfissionalRequest request) {
+        Profissional profissional = requestToDomain(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(domainToResponse(profissionalUseCase.inserirProfissional(profissional)));
     }
 
     @GetMapping("{id}")
     public ResponseEntity<ProfissionalResponse> buscarId(@PathVariable Long id) {
         Profissional profissional = profissionalUseCase.buscarProfissional(id);
-        return ResponseEntity.ok(mapper.domainToResponse(profissional));
+        return ResponseEntity.ok(domainToResponse(profissional));
     }
 
     @GetMapping
     public ResponseEntity<List<ProfissionalResponse>> listarTodos() {
         List<ProfissionalResponse> listaProfissionais = profissionalUseCase.buscarProfissionais()
                 .stream()
-                .map(mapper::domainToResponse)
+                .map(ProfissionalDtoMapper::domainToResponse)
                 .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(listaProfissionais);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ProfissionalResponse> atualizarProfissional(@PathVariable Long id, @RequestBody Profissional profissional) {
-        Profissional model = profissionalUseCase.atualizarProfissional(id, profissional);
-        return ResponseEntity.status(HttpStatus.OK).body(mapper.domainToResponse(model));
+    public ResponseEntity<ProfissionalResponse> atualizarProfissional(@PathVariable Long id, @RequestBody ProfissionalRequest profissionalRequest) {
+        Profissional model = profissionalUseCase.atualizarProfissional(id, requestToDomain(profissionalRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(domainToResponse(model));
     }
 
     @DeleteMapping("{id}")

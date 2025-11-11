@@ -6,29 +6,32 @@ import com.stayfine.stayfine.infrastructure.database.entity.ProdutoDBEntity;
 import com.stayfine.stayfine.infrastructure.database.mapper.ProdutoMapper;
 import com.stayfine.stayfine.infrastructure.database.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.stayfine.stayfine.infrastructure.database.mapper.ProdutoMapper.toDbEntity;
+import static com.stayfine.stayfine.infrastructure.database.mapper.ProdutoMapper.toDomain;
+
 @Service
 public class ProdutoPersistenceAdapter implements ProdutoGateway {
 
     private final ProdutoRepository repository;
-    private final ProdutoMapper mapper;
     private final Logger log = LoggerFactory.getLogger(ProdutoPersistenceAdapter.class);
 
-    public ProdutoPersistenceAdapter(ProdutoRepository repository, ProdutoMapper mapper) {
+    public ProdutoPersistenceAdapter(ProdutoRepository repository) {
         this.repository = repository;
-        this.mapper = mapper;
     }
 
     @Override
+    @Transactional
     public Produto inserirProduto(Produto produto) {
-        ProdutoDBEntity produtoDBEntity = repository.save(mapper.toDbEntity(produto));
+        ProdutoDBEntity produtoDBEntity = repository.save(toDbEntity(produto));
         log.debug("Produto salvo id={}", produtoDBEntity.getId());
-        return mapper.toDomain(produtoDBEntity);
+        return toDomain(produtoDBEntity);
     }
 
     @Override
@@ -37,28 +40,30 @@ public class ProdutoPersistenceAdapter implements ProdutoGateway {
         ProdutoDBEntity produtoDB = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException(id + " Produto não encontrado na base de dados"));
 
-        return mapper.toDomain(produtoDB);
+        return toDomain(produtoDB);
     }
 
     @Override
     public List<Produto> listarProdutos() {
         return repository.findAll()
                 .stream()
-                .map(mapper::toDomain)
+                .map(ProdutoMapper::toDomain)
                 .toList();
     }
 
 
     @Override
+    @Transactional
     public Produto atualizarProduto(Long id, Produto produto) {
-        ProdutoDBEntity produtoExistente = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado para atualização."));
+        ProdutoDBEntity entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado na base de dados para atualização."));
 
-        ProdutoDBEntity produtoAtualizado = mapper.toDbEntity(produto);
-        produtoAtualizado.setId(produtoExistente.getId());
-        ProdutoDBEntity salvo = repository.save(produtoAtualizado);
+        entity.setDescricao(produto.getDescricao());
+        entity.setPreco(produto.getPreco());
+        entity.setDataAtualizacao(produto.getDataAtualizacao());
+        ProdutoDBEntity salvo = repository.save(entity);
         log.debug("Profissional atualizado id={}", salvo.getId());
-        return mapper.toDomain(salvo);
+        return toDomain(salvo);
     }
 
     @Override

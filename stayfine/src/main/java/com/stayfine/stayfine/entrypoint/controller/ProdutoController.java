@@ -36,4 +36,11 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.OK).body(listaDeProdutos);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<Produto> atualizar(@PathVariable Long id, @RequestBody Produto produto) {
+        Produto salvo = produtoUseCase.atualizarProduto(id, produto);
+        return ResponseEntity.status(HttpStatus.OK).body(salvo);
+    }
+
+
 }

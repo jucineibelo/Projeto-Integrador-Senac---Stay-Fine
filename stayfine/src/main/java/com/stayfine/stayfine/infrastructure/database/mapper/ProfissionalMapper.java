@@ -5,23 +5,23 @@ import com.stayfine.stayfine.infrastructure.database.entity.ProfissionalDBEntity
 
 public class ProfissionalMapper {
 
-    public static ProfissionalDBEntity toDbEntity(Profissional domain) {
+    public static ProfissionalDBEntity toDbEntity(Profissional profissional) {
         return new ProfissionalDBEntity(
-                domain.getId(),
-                domain.getNome(),
-                domain.getStatus(),
-                domain.getDataCadastro(),
-                domain.getDataAtualizacao()
+                profissional.getId(),
+                profissional.getNome(),
+                profissional.getStatus(),
+                profissional.getDataCadastro(),
+                profissional.getDataAtualizacao()
         );
     }
 
-    public static Profissional toDomain(ProfissionalDBEntity db) {
+    public static Profissional toDomain(ProfissionalDBEntity profissionalDBEntity) {
         return new Profissional(
-                db.getId(),
-                db.getNome(),
-                db.getStatus(),
-                db.getDataRegistro(),
-                db.getDataAtualizacao()
+                profissionalDBEntity.getId(),
+                profissionalDBEntity.getNome(),
+                profissionalDBEntity.getStatus(),
+                profissionalDBEntity.getDataRegistro(),
+                profissionalDBEntity.getDataAtualizacao()
         );
     }
 }
