@@ -5,13 +5,13 @@ import com.stayfine.stayfine.core.domain.model.Cliente;
 import java.util.List;
 
 public interface ClienteUseCase {
-    Cliente inserirPessoa(Cliente cliente);
+    Cliente inserirCliente(Cliente cliente);
 
-    Cliente buscarPessoa(Long id);
+    Cliente buscarCliente(Long id);
 
-    List<Cliente> listarPessoas();
+    List<Cliente> listarCliente();
 
-    Cliente atualizarPessoa(Long id, Cliente cliente);
+    Cliente atualizarCliente(Long id, Cliente cliente);
 
-    void excluirPessoa(Long id);
+    void excluirCliente(Long id);
 }

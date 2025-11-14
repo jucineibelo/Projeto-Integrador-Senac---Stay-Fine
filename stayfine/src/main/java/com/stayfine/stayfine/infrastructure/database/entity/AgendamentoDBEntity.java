@@ -1,8 +1,8 @@
 package com.stayfine.stayfine.infrastructure.database.entity;
 
 
+import com.stayfine.stayfine.core.domain.model.Cliente;
 import com.stayfine.stayfine.core.domain.model.Pagamento;
-import com.stayfine.stayfine.core.domain.model.Pessoa;
 import com.stayfine.stayfine.core.domain.model.Produto;
 import com.stayfine.stayfine.core.domain.model.Profissional;
 import jakarta.persistence.*;
@@ -28,7 +28,7 @@ public class AgendamentoDBEntity {
     private String status;
 
     @Column(name = "pessoa")
-    private Pessoa pessoa;
+    private Cliente cliente;
 
     @Column(name = "pagamento")
     private Pagamento pagamento;
@@ -46,12 +46,14 @@ public class AgendamentoDBEntity {
 
     }
 
-    public AgendamentoDBEntity(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualização, String status, Pessoa pessoa, Pagamento pagamento, Profissional profissional, List<Produto> produtos, OffsetDateTime dataAgendamento) {
+    public AgendamentoDBEntity(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualização, String status,
+                               Cliente cliente, Pagamento pagamento, Profissional profissional, List<Produto> produtos,
+                               OffsetDateTime dataAgendamento) {
         this.id = id;
         this.dataCadastro = dataCadastro;
         this.dataAtualização = dataAtualização;
         this.status = status;
-        this.pessoa = pessoa;
+        this.cliente = cliente;
         this.pagamento = pagamento;
         this.profissional = profissional;
         this.produtos = produtos;
@@ -90,12 +92,12 @@ public class AgendamentoDBEntity {
         this.status = status;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public Pagamento getPagamento() {

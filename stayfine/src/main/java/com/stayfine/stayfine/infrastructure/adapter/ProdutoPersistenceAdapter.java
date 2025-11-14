@@ -3,7 +3,7 @@ package com.stayfine.stayfine.infrastructure.adapter;
 import com.stayfine.stayfine.core.domain.model.Produto;
 import com.stayfine.stayfine.core.gateway.ProdutoGateway;
 import com.stayfine.stayfine.infrastructure.database.entity.ProdutoDBEntity;
-import com.stayfine.stayfine.infrastructure.database.mapper.ProdutoMapper;
+import com.stayfine.stayfine.infrastructure.mapper.ProdutoMapper;
 import com.stayfine.stayfine.infrastructure.database.repository.ProdutoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.stayfine.stayfine.infrastructure.database.mapper.ProdutoMapper.toDbEntity;
-import static com.stayfine.stayfine.infrastructure.database.mapper.ProdutoMapper.toDomain;
+import static com.stayfine.stayfine.infrastructure.mapper.ProdutoMapper.toDbEntity;
+import static com.stayfine.stayfine.infrastructure.mapper.ProdutoMapper.toDomain;
 
 @Service
 public class ProdutoPersistenceAdapter implements ProdutoGateway {

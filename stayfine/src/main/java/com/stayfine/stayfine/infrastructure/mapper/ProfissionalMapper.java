@@ -1,4 +1,4 @@
-package com.stayfine.stayfine.infrastructure.database.mapper;
+package com.stayfine.stayfine.infrastructure.mapper;
 
 import com.stayfine.stayfine.core.domain.model.Profissional;
 import com.stayfine.stayfine.infrastructure.database.entity.ProfissionalDBEntity;
@@ -15,13 +15,13 @@ public class ProfissionalMapper {
         );
     }
 
-    public static Profissional toDomain(ProfissionalDBEntity profissionalDBEntity) {
+    public static Profissional toDomain(ProfissionalDBEntity entity) {
         return new Profissional(
-                profissionalDBEntity.getId(),
-                profissionalDBEntity.getNome(),
-                profissionalDBEntity.getStatus(),
-                profissionalDBEntity.getDataRegistro(),
-                profissionalDBEntity.getDataAtualizacao()
+                entity.getId(),
+                entity.getNome(),
+                entity.getStatus(),
+                entity.getDataRegistro(),
+                entity.getDataAtualizacao()
         );
     }
 }

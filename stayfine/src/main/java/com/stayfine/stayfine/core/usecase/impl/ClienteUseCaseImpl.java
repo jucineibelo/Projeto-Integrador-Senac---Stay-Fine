@@ -20,7 +20,7 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
     }
 
     @Override
-    public Cliente inserirPessoa(Cliente cliente) {
+    public Cliente inserirCliente(Cliente cliente) {
         if (cliente == null) {
             throw new DomainException("Pessoa está vazia");
         }
@@ -31,7 +31,7 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
     }
 
     @Override
-    public Cliente buscarPessoa(Long id) {
+    public Cliente buscarCliente(Long id) {
         if (id == null) {
             throw new DomainException("Id vazio");
         }
@@ -39,18 +39,18 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
     }
 
     @Override
-    public List<Cliente> listarPessoas() {
+    public List<Cliente> listarCliente() {
         return gateway.listarClientes();
     }
 
     @Override
-    public Cliente atualizarPessoa(Long id, Cliente cliente) {
+    public Cliente atualizarCliente(Long id, Cliente cliente) {
 
         if (id == null || cliente == null) {
             throw new DomainException("Pessoa ou id está vazio");
         }
 
-        Cliente clienteExistente = buscarPessoa(id);
+        Cliente clienteExistente = buscarCliente(id);
 
         if (deveAtualizar(cliente.getNome(), clienteExistente.getNome())) {
             clienteExistente.setNome(cliente.getNome());
@@ -78,13 +78,13 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
 
 
     @Override
-    public void excluirPessoa(Long id) {
+    public void excluirCliente(Long id) {
 
         if (id == null) {
             throw new DomainException("Id ivalido");
         }
 
-        Cliente clienteExistente = buscarPessoa(id);
+        Cliente clienteExistente = buscarCliente(id);
         clienteExistente.setStatus(DomainStatus.EXCLUIDO.name());
         gateway.excluirCliente(clienteExistente);
     }

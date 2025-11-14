@@ -3,7 +3,7 @@ package com.stayfine.stayfine.infrastructure.adapter;
 
 import com.stayfine.stayfine.core.domain.model.Profissional;
 import com.stayfine.stayfine.core.gateway.ProfissionalGateway;
-import com.stayfine.stayfine.infrastructure.database.mapper.ProfissionalMapper;
+import com.stayfine.stayfine.infrastructure.mapper.ProfissionalMapper;
 import com.stayfine.stayfine.infrastructure.database.entity.ProfissionalDBEntity;
 import com.stayfine.stayfine.infrastructure.database.repository.ProfissionalRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,13 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.stayfine.stayfine.core.domain.enums.DomainStatus.EXCLUIDO;
-import static com.stayfine.stayfine.infrastructure.database.mapper.ProfissionalMapper.toDbEntity;
-import static com.stayfine.stayfine.infrastructure.database.mapper.ProfissionalMapper.toDomain;
+import static com.stayfine.stayfine.infrastructure.mapper.ProfissionalMapper.toDbEntity;
+import static com.stayfine.stayfine.infrastructure.mapper.ProfissionalMapper.toDomain;
 
 @Service
 public class ProfissionalPersistenceAdapter implements ProfissionalGateway {

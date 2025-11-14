@@ -1,4 +1,4 @@
-package com.stayfine.stayfine.infrastructure.database.mapper;
+package com.stayfine.stayfine.infrastructure.mapper;
 
 import com.stayfine.stayfine.core.domain.model.Pagamento;
 import com.stayfine.stayfine.core.domain.model.Pagamento;
@@ -17,14 +17,14 @@ public class PagamentoMapper {
                 pagamento.getStatus());
     }
 
-    public Pagamento toDomain(PagamentoDBEntity pagamentoDBEntity) {
+    public Pagamento toDomain(PagamentoDBEntity entity) {
         return new Pagamento(
 
-                pagamentoDBEntity.getId(),
-                pagamentoDBEntity.getDescricao(),
-                pagamentoDBEntity.getDataCadastro(),
-                pagamentoDBEntity.getDataAtualizacao(),
-                pagamentoDBEntity.getTipo(),
-                pagamentoDBEntity.getStatus());
+                entity.getId(),
+                entity.getDescricao(),
+                entity.getDataCadastro(),
+                entity.getDataAtualizacao(),
+                entity.getTipo(),
+                entity.getStatus());
     }
 }

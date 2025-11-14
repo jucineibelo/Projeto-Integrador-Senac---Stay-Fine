@@ -1,4 +1,4 @@
-package com.stayfine.stayfine.infrastructure.database.mapper;
+package com.stayfine.stayfine.infrastructure.mapper;
 
 import com.stayfine.stayfine.core.domain.model.Produto;
 import com.stayfine.stayfine.infrastructure.database.entity.ProdutoDBEntity;
@@ -15,13 +15,13 @@ public class ProdutoMapper {
                 produto.getStatus());
     }
 
-    public static Produto toDomain(ProdutoDBEntity produtoDBEntity) {
+    public static Produto toDomain(ProdutoDBEntity entity) {
         return new Produto(
-                produtoDBEntity.getId(),
-                produtoDBEntity.getDescricao(),
-                produtoDBEntity.getPreco(),
-                produtoDBEntity.getDataCadastro(),
-                produtoDBEntity.getDataAtualizacao(),
-                produtoDBEntity.getStatus());
+                entity.getId(),
+                entity.getDescricao(),
+                entity.getPreco(),
+                entity.getDataCadastro(),
+                entity.getDataAtualizacao(),
+                entity.getStatus());
     }
 }

@@ -27,7 +27,8 @@ public class PagamentoDBEntity {
     @Column(name = "tipo")
     private String tipo;
 
-    public PagamentoDBEntity(Long id, String descricao, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String status, String tipo) {
+    public PagamentoDBEntity(Long id, String descricao, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao,
+                             String status, String tipo) {
         this.id = id;
         this.descricao = descricao;
         this.dataCadastro = dataCadastro;
