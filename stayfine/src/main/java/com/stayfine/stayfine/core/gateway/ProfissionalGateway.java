@@ -12,7 +12,7 @@ public interface ProfissionalGateway {
 
     List<Profissional> buscarProfissionais();
 
-    Profissional atualizarProfissional(Long id, Profissional profissional);
+    Profissional atualizarProfissional(Profissional profissional);
 
     void excluirProfissional(Profissional profissional);
 }

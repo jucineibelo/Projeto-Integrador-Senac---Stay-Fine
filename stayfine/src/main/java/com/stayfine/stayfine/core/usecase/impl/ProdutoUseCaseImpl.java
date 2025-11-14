@@ -65,7 +65,7 @@ public class ProdutoUseCaseImpl implements ProdutoUseCase {
             produtoExistente.setDataAtualizacao(OffsetDateTime.now());
         }
 
-        return gateway.atualizarProduto(id, produtoExistente);
+        return gateway.atualizarProduto(produtoExistente);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.stayfine.stayfine.core.usecase.impl;
 
-import com.stayfine.stayfine.core.domain.model.Profissional;
 import com.stayfine.stayfine.core.domain.enums.DomainStatus;
+import com.stayfine.stayfine.core.domain.model.Profissional;
 import com.stayfine.stayfine.core.exceptions.DomainException;
 import com.stayfine.stayfine.core.gateway.ProfissionalGateway;
 import com.stayfine.stayfine.core.usecase.ProfissionalUseCase;
@@ -57,12 +57,12 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
 
         Profissional profissionalExistente = buscarProfissional(id);
 
-        if (deveAtualizar(profissional.getNome(), profissionalExistente.getNome())){
+        if (deveAtualizar(profissional.getNome(), profissionalExistente.getNome())) {
             profissionalExistente.setNome(profissional.getNome());
             profissionalExistente.setDataAtualizacao(OffsetDateTime.now());
         }
 
-        return gateway.atualizarProfissional(id, profissionalExistente);
+        return gateway.atualizarProfissional(profissionalExistente);
     }
 
 
