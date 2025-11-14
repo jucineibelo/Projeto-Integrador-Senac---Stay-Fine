@@ -5,11 +5,10 @@ import com.stayfine.stayfine.core.gateway.ProdutoGateway;
 import com.stayfine.stayfine.infrastructure.database.entity.ProdutoDBEntity;
 import com.stayfine.stayfine.infrastructure.database.mapper.ProdutoMapper;
 import com.stayfine.stayfine.infrastructure.database.repository.ProdutoRepository;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -54,24 +53,16 @@ public class ProdutoPersistenceAdapter implements ProdutoGateway {
 
     @Override
     @Transactional
-    public Produto atualizarProduto(Long id, Produto produto) {
-        ProdutoDBEntity entity = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado na base de dados para atualização."));
-
-        entity.setDescricao(produto.getDescricao());
-        entity.setPreco(produto.getPreco());
-        entity.setDataAtualizacao(produto.getDataAtualizacao());
-        ProdutoDBEntity salvo = repository.save(entity);
+    public Produto atualizarProduto(Produto produto) {
+        ProdutoDBEntity salvo = repository.save(toDbEntity(produto));
         log.debug("Profissional atualizado id={}", salvo.getId());
         return toDomain(salvo);
     }
 
     @Override
-    public void excluirProduto(Long id) {
-        ProdutoDBEntity produtoExistente = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado para exclusão."));
-
-        repository.save(produtoExistente);
-        log.debug("Produto marcado como EXCLUIDO id={}", id);
+    @Transactional
+    public void excluirProduto(Produto produto) {
+        repository.save(toDbEntity(produto));
+        log.debug("Produto marcado como EXCLUIDO id={}", produto.getId());
     }
 }

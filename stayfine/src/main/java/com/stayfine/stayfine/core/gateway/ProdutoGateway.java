@@ -12,7 +12,7 @@ public interface ProdutoGateway {
 
     List<Produto> listarProdutos();
 
-    Produto atualizarProduto(Long id, Produto produto);
+    Produto atualizarProduto(Produto produto);
 
-    void excluirProduto(Long id);
+    void excluirProduto(Produto produto);
 }

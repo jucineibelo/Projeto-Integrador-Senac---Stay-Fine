@@ -65,7 +65,7 @@ public class ProdutoUseCaseImpl implements ProdutoUseCase {
             produtoExistente.setDataAtualizacao(OffsetDateTime.now());
         }
 
-        return gateway.atualizarProduto(id, produtoExistente);
+        return gateway.atualizarProduto(produtoExistente);
     }
 
     @Override
@@ -78,6 +78,6 @@ public class ProdutoUseCaseImpl implements ProdutoUseCase {
         Produto produto = buscarProduto(id);
         produto.setStatus(EXCLUIDO.name());
         produto.setDataAtualizacao(OffsetDateTime.now());
-        gateway.excluirProduto(produto.getId());
+        gateway.excluirProduto(produto);
     }
 }

@@ -12,7 +12,7 @@ public interface ClienteGateway {
 
     List<Cliente> listarClientes();
 
-    Cliente atualizarCliente(Long id, Cliente cliente);
+    Cliente atualizarCliente(Cliente cliente);
 
-    void excluirCliente(Long id);
+    void excluirCliente(Cliente cliente);
 }

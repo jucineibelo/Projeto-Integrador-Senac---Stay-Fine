@@ -11,8 +11,8 @@ public interface PagamentoGateway {
 
     List<Pagamento> listarPagamentos();
 
-    Pagamento atualizarPagamento(Long id, Pagamento pagamento);
+    Pagamento atualizarPagamento(Pagamento pagamento);
 
-    void excluirPagamento(Long id);
+    void excluirPagamento(Pagamento pagamento);
 
 }

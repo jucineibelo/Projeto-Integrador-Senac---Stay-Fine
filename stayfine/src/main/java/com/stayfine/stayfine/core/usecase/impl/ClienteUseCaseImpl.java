@@ -5,6 +5,7 @@ import com.stayfine.stayfine.core.domain.model.Cliente;
 import com.stayfine.stayfine.core.exceptions.DomainException;
 import com.stayfine.stayfine.core.gateway.ClienteGateway;
 import com.stayfine.stayfine.core.usecase.ClienteUseCase;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
 
     @Override
     public Cliente atualizarPessoa(Long id, Cliente cliente) {
+
         if (id == null || cliente == null) {
             throw new DomainException("Pessoa ou id está vazio");
         }
@@ -66,12 +68,12 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
             clienteExistente.setUsername(cliente.getUsername());
         }
 
-        if (deveAtualizar(cliente.getPassword(), clienteExistente.getPassword())){
+        if (deveAtualizar(cliente.getPassword(), clienteExistente.getPassword())) {
             clienteExistente.setPassword(cliente.getPassword());
         }
 
         clienteExistente.setDataAtualizacao(OffsetDateTime.now());
-        return gateway.atualizarCliente(id, clienteExistente);
+        return gateway.atualizarCliente(clienteExistente);
     }
 
 
@@ -84,7 +86,7 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
 
         Cliente clienteExistente = buscarPessoa(id);
         clienteExistente.setStatus(DomainStatus.EXCLUIDO.name());
-        gateway.excluirCliente(clienteExistente.getId());
+        gateway.excluirCliente(clienteExistente);
     }
 
 

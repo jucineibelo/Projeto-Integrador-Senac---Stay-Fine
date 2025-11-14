@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.stayfine.stayfine.core.domain.enums.DomainStatus.EXCLUIDO;
+import static com.stayfine.stayfine.infrastructure.database.mapper.ProfissionalMapper.toDbEntity;
 import static com.stayfine.stayfine.infrastructure.database.mapper.ProfissionalMapper.toDomain;
 
 @Service
@@ -54,28 +55,19 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
                 .collect(Collectors.toList());
     }
 
+    @Override
     @Transactional
-    public Profissional atualizarProfissional(Long id, Profissional profissional) {
-        ProfissionalDBEntity entity = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Profissional " + id + " não encontrado para atualização."));
-
-        entity.setNome(profissional.getNome());
-        entity.setStatus(profissional.getStatus());
-        entity.setDataAtualizacao(profissional.getDataAtualizacao());
-
-        ProfissionalDBEntity salvo = repository.save(entity);
+    public Profissional atualizarProfissional(Profissional profissional) {
+        ProfissionalDBEntity salvo = repository.save(toDbEntity(profissional));
         log.debug("Profissional atualizado id={}", salvo.getId());
         return toDomain(salvo);
     }
 
     @Override
     @Transactional
-    public void excluirProfissional(Long id) {
-        ProfissionalDBEntity profissionalDB = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Profissional " + id + " não encontrado para exclusão."));
-
-        repository.save(profissionalDB);
-        log.debug("Profissional marcado como EXCLUIDO id={}", id);
+    public void excluirProfissional(Profissional profissional) {
+        repository.save(toDbEntity(profissional));
+        log.debug("Profissional marcado como EXCLUIDO id={}", profissional.getId());
     }
 }
 
