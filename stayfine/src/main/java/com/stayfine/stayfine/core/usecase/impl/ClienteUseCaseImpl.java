@@ -84,7 +84,7 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
 
         Cliente clienteExistente = buscarPessoa(id);
         clienteExistente.setStatus(DomainStatus.EXCLUIDO.name());
-        gateway.excluirCliente(clienteExistente.getId());
+        gateway.excluirCliente(clienteExistente);
     }
 
 

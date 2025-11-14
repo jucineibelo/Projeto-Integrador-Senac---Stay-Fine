@@ -14,7 +14,7 @@ public interface ProfissionalGateway {
 
     Profissional atualizarProfissional(Long id, Profissional profissional);
 
-    void excluirProfissional(Long id);
+    void excluirProfissional(Profissional profissional);
 }
 
 // Serve como um contrato para implementar a persistência de dados.

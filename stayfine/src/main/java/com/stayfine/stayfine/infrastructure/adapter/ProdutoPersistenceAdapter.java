@@ -6,10 +6,10 @@ import com.stayfine.stayfine.infrastructure.database.entity.ProdutoDBEntity;
 import com.stayfine.stayfine.infrastructure.database.mapper.ProdutoMapper;
 import com.stayfine.stayfine.infrastructure.database.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -67,11 +67,9 @@ public class ProdutoPersistenceAdapter implements ProdutoGateway {
     }
 
     @Override
-    public void excluirProduto(Long id) {
-        ProdutoDBEntity produtoExistente = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado para exclusão."));
-
-        repository.save(produtoExistente);
-        log.debug("Produto marcado como EXCLUIDO id={}", id);
+    @Transactional
+    public void excluirProduto(Produto produto) {
+        repository.save(toDbEntity(produto));
+        log.debug("Produto marcado como EXCLUIDO id={}", produto.getId());
     }
 }

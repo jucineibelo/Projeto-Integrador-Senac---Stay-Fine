@@ -76,6 +76,6 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
         Profissional buscarProfissional = buscarProfissional(id);
         buscarProfissional.setStatus(DomainStatus.EXCLUIDO.name());
         buscarProfissional.setDataAtualizacao(OffsetDateTime.now());
-        gateway.excluirProfissional(buscarProfissional.getId());
+        gateway.excluirProfissional(buscarProfissional);
     }
 }

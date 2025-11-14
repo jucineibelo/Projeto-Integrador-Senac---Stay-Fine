@@ -14,5 +14,5 @@ public interface ProdutoGateway {
 
     Produto atualizarProduto(Long id, Produto produto);
 
-    void excluirProduto(Long id);
+    void excluirProduto(Produto produto);
 }

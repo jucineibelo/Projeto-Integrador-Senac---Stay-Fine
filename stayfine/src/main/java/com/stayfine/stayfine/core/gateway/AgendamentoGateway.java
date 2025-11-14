@@ -13,5 +13,5 @@ public interface AgendamentoGateway {
 
     Agendamento atualizarAgendamento(Long id, Agendamento agendamento);
 
-    void excluirAgendamento(Long id);
+    void excluirAgendamento(Agendamento agendamento);
 }

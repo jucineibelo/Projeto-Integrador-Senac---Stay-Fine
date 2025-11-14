@@ -14,5 +14,5 @@ public interface ClienteGateway {
 
     Cliente atualizarCliente(Long id, Cliente cliente);
 
-    void excluirCliente(Long id);
+    void excluirCliente(Cliente cliente);
 }

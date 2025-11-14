@@ -78,6 +78,6 @@ public class ProdutoUseCaseImpl implements ProdutoUseCase {
         Produto produto = buscarProduto(id);
         produto.setStatus(EXCLUIDO.name());
         produto.setDataAtualizacao(OffsetDateTime.now());
-        gateway.excluirProduto(produto.getId());
+        gateway.excluirProduto(produto);
     }
 }

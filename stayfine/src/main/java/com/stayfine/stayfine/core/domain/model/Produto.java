@@ -13,6 +13,11 @@ public class Produto {
     public Produto() {
     }
 
+    public Produto(String descricao, Double preco) {
+        this.descricao = descricao;
+        this.preco = preco;
+    }
+
     public Produto(Long id, String descricao, Double preco, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String status) {
         this.id = id;
         this.descricao = descricao;

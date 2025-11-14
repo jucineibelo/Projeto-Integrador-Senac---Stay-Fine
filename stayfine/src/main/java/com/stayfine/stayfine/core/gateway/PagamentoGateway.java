@@ -13,6 +13,6 @@ public interface PagamentoGateway {
 
     Pagamento atualizarPagamento(Long id, Pagamento pagamento);
 
-    void excluirPagamento(Long id);
+    void excluirPagamento(Pagamento pagamento);
 
 }
