@@ -9,11 +9,11 @@ public class ClienteMapper {
         return new ClienteDBEntity(
                 cliente.getId(),
                 cliente.getNome(),
-                cliente.getStatus(),
                 cliente.getEmail(),
                 cliente.getTelefone(),
                 cliente.getDataCadastro(),
                 cliente.getDataAtualizacao(),
+                cliente.getStatus(),
                 cliente.getUsername(),
                 cliente.getPassword());
     }

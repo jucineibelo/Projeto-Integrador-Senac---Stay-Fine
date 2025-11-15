@@ -9,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class ClientePersistenseAdapter implements ClienteGateway {
     }
 
     @Override
+    @Transactional
     public Cliente inserirCliente(Cliente cliente) {
         ClienteDBEntity clienteSalvo = repository.save(toDbEntity(cliente));
         log.debug("Cliente salvo id={}", clienteSalvo.getId());
@@ -49,6 +51,7 @@ public class ClientePersistenseAdapter implements ClienteGateway {
     }
 
     @Override
+    @Transactional
     public Cliente atualizarCliente(Cliente cliente) {
         ClienteDBEntity clienteDB = repository.save(toDbEntity(cliente));
         log.debug("Cliente atualizado id={}", clienteDB.getId());
@@ -56,6 +59,7 @@ public class ClientePersistenseAdapter implements ClienteGateway {
     }
 
     @Override
+    @Transactional
     public void excluirCliente(Cliente cliente) {
         ClienteDBEntity clienteDB = repository.save(toDbEntity(cliente));
         log.debug("Cliente marcado como EXCLUIDO id={}", clienteDB.getId());

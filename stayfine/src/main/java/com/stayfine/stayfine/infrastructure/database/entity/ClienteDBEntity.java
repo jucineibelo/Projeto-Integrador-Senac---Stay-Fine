@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "cliente")
+@Table(name = "clientes")
 public class ClienteDBEntity {
 
     @Id
@@ -14,9 +14,6 @@ public class ClienteDBEntity {
 
     @Column(name = "nome")
     private String nome;
-
-    @Column(name = "status")
-    private String status;
 
     @Column(name = "email")
     private String email;
@@ -30,25 +27,28 @@ public class ClienteDBEntity {
     @Column(name = "data_atualizacao")
     private OffsetDateTime dataAtualizacao;
 
+    @Column(name = "status")
+    private String status;
+
     @Column(name = "username")
     private String username;
 
     @Column(name = "password")
     private String password;
 
+
     public ClienteDBEntity() {
     }
 
-    public ClienteDBEntity(Long id, String nome, String status, String email, String telefone,
-                           OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String username,
-                           String password) {
+    public ClienteDBEntity(Long id, String nome, String email, String telefone, OffsetDateTime dataCadastro,
+                           OffsetDateTime dataAtualizacao, String status, String username, String password) {
         this.id = id;
         this.nome = nome;
-        this.status = status;
         this.email = email;
         this.telefone = telefone;
         this.dataCadastro = dataCadastro;
         this.dataAtualizacao = dataAtualizacao;
+        this.status = status;
         this.username = username;
         this.password = password;
     }
@@ -67,14 +67,6 @@ public class ClienteDBEntity {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getEmail() {
@@ -107,6 +99,14 @@ public class ClienteDBEntity {
 
     public void setDataAtualizacao(OffsetDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getUsername() {

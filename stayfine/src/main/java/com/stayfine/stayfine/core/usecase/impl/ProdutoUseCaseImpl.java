@@ -54,14 +54,19 @@ public class ProdutoUseCaseImpl implements ProdutoUseCase {
         }
 
         Produto produtoExistente = buscarProduto(id);
+        boolean alterou = false;
 
         if (deveAtualizar(produto.getDescricao(), produtoExistente.getDescricao())) {
             produtoExistente.setDescricao(produto.getDescricao());
-            produtoExistente.setDataAtualizacao(OffsetDateTime.now());
+            alterou = true;
         }
 
-        if (produto.getPreco() > 0 && produto.getPreco() != produtoExistente.getPreco()) {
+        if (produto.getPreco() != null && !produto.getPreco().equals(produtoExistente.getPreco())) {
             produtoExistente.setPreco(produto.getPreco());
+            alterou = true;
+        }
+
+        if (alterou) {
             produtoExistente.setDataAtualizacao(OffsetDateTime.now());
         }
 

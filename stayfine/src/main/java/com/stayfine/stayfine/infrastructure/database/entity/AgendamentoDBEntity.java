@@ -1,10 +1,6 @@
 package com.stayfine.stayfine.infrastructure.database.entity;
 
 
-import com.stayfine.stayfine.core.domain.model.Cliente;
-import com.stayfine.stayfine.core.domain.model.Pagamento;
-import com.stayfine.stayfine.core.domain.model.Produto;
-import com.stayfine.stayfine.core.domain.model.Profissional;
 import jakarta.persistence.*;
 
 import java.time.OffsetDateTime;
@@ -27,17 +23,29 @@ public class AgendamentoDBEntity {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "pessoa")
-    private Cliente cliente;
+    // Um cliente pode ter vários agendamentos
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private ClienteDBEntity cliente;
 
-    @Column(name = "pagamento")
-    private Pagamento pagamento;
+    // Um profissional pode ter vários agendamentos, mas um agendamento só tem 1 profissional
+    @ManyToOne
+    @JoinColumn(name = "profissional_id")
+    private ProfissionalDBEntity profissional;
 
-    @Column(name = "profissional")
-    private Profissional profissional;
+    // Relacionamento 1:1 - um agendamento tem 1 pagamento
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pagamento_id")
+    private PagamentoDBEntity pagamento;
 
-    @Column(name = "produtos")
-    private List<Produto> produtos;
+    // Agendamento pode ter vários produtos, e produtos podem aparecer em vários agendamentos
+    @ManyToMany
+    @JoinTable(
+            name = "agendamento_produto",
+            joinColumns = @JoinColumn(name = "agendamento_id"),
+            inverseJoinColumns = @JoinColumn(name = "produto_id")
+    )
+    private List<ProdutoDBEntity> produtos;
 
     @Column(name = "data_agendamento")
     private OffsetDateTime dataAgendamento;
@@ -47,15 +55,15 @@ public class AgendamentoDBEntity {
     }
 
     public AgendamentoDBEntity(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualização, String status,
-                               Cliente cliente, Pagamento pagamento, Profissional profissional, List<Produto> produtos,
-                               OffsetDateTime dataAgendamento) {
+                               ClienteDBEntity cliente, ProfissionalDBEntity profissional, PagamentoDBEntity pagamento,
+                               List<ProdutoDBEntity> produtos, OffsetDateTime dataAgendamento) {
         this.id = id;
         this.dataCadastro = dataCadastro;
         this.dataAtualização = dataAtualização;
         this.status = status;
         this.cliente = cliente;
-        this.pagamento = pagamento;
         this.profissional = profissional;
+        this.pagamento = pagamento;
         this.produtos = produtos;
         this.dataAgendamento = dataAgendamento;
     }
@@ -92,35 +100,35 @@ public class AgendamentoDBEntity {
         this.status = status;
     }
 
-    public Cliente getCliente() {
+    public ClienteDBEntity getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(ClienteDBEntity cliente) {
         this.cliente = cliente;
     }
 
-    public Pagamento getPagamento() {
-        return pagamento;
-    }
-
-    public void setPagamento(Pagamento pagamento) {
-        this.pagamento = pagamento;
-    }
-
-    public Profissional getProfissional() {
+    public ProfissionalDBEntity getProfissional() {
         return profissional;
     }
 
-    public void setProfissional(Profissional profissional) {
+    public void setProfissional(ProfissionalDBEntity profissional) {
         this.profissional = profissional;
     }
 
-    public List<Produto> getProdutos() {
+    public PagamentoDBEntity getPagamento() {
+        return pagamento;
+    }
+
+    public void setPagamento(PagamentoDBEntity pagamento) {
+        this.pagamento = pagamento;
+    }
+
+    public List<ProdutoDBEntity> getProdutos() {
         return produtos;
     }
 
-    public void setProdutos(List<Produto> produtos) {
+    public void setProdutos(List<ProdutoDBEntity> produtos) {
         this.produtos = produtos;
     }
 

@@ -63,11 +63,11 @@ public class Agendamento {
         this.status = status;
     }
 
-    public Cliente getPessoa() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setPessoa(Cliente cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
