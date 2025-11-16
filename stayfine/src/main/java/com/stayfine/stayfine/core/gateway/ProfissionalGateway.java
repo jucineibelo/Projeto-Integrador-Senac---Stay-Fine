@@ -10,11 +10,13 @@ public interface ProfissionalGateway {
 
     Profissional buscarProfissional(Long id);
 
-    List<Profissional> buscarProfissionais();
+    List<Profissional> listarProfissionais();
 
     Profissional atualizarProfissional(Profissional profissional);
 
     void excluirProfissional(Profissional profissional);
+
+    List<Profissional> listarProfissionaisAtivos();
 }
 
 // Serve como um contrato para implementar a persistência de dados.

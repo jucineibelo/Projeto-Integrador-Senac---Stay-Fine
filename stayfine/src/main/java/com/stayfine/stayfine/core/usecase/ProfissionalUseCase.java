@@ -14,6 +14,8 @@ public interface ProfissionalUseCase {
     Profissional atualizarProfissional(Long id, Profissional profissional);
 
     void excluirProfissional(Long id);
+
+    List<Profissional> listarProfissionaisAtivos();
 }
 
 //Define os casos de uso e a lógica de negócios relacionada às operações realizadas com objetos do tipo Profissional.

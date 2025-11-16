@@ -1,17 +1,8 @@
 package com.stayfine.stayfine.configuration;
 
-import com.stayfine.stayfine.core.gateway.ClienteGateway;
-import com.stayfine.stayfine.core.gateway.PagamentoGateway;
-import com.stayfine.stayfine.core.gateway.ProdutoGateway;
-import com.stayfine.stayfine.core.gateway.ProfissionalGateway;
-import com.stayfine.stayfine.core.usecase.ClienteUseCase;
-import com.stayfine.stayfine.core.usecase.PagamentoUseCase;
-import com.stayfine.stayfine.core.usecase.ProdutoUseCase;
-import com.stayfine.stayfine.core.usecase.ProfissionalUseCase;
-import com.stayfine.stayfine.core.usecase.impl.ClienteUseCaseImpl;
-import com.stayfine.stayfine.core.usecase.impl.PagamentoUseCaseImpl;
-import com.stayfine.stayfine.core.usecase.impl.ProdutoUseCaseImpl;
-import com.stayfine.stayfine.core.usecase.impl.ProfissionalUseCaseImpl;
+import com.stayfine.stayfine.core.gateway.*;
+import com.stayfine.stayfine.core.usecase.*;
+import com.stayfine.stayfine.core.usecase.impl.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,5 +27,10 @@ public class UseCaseConfig {
     @Bean
     public PagamentoUseCase pagamentoUseCaseImpl(PagamentoGateway pagamentoGateway) {
         return new PagamentoUseCaseImpl(pagamentoGateway);
+    }
+
+    @Bean
+    public AgendamentoUseCase agendamentoUseCaseImpl(AgendamentoGateway agendamentoGateway) {
+        return new AgendamentoUseCaseImpl(agendamentoGateway);
     }
 }

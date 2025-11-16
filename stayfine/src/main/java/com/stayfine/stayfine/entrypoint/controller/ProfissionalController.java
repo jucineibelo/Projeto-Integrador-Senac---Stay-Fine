@@ -45,6 +45,17 @@ public class ProfissionalController {
         return ResponseEntity.status(HttpStatus.OK).body(listaProfissionais);
     }
 
+    @GetMapping("/ativos")
+    public ResponseEntity<List<ProfissionalResponse>> listarAtivos() {
+
+        List<ProfissionalResponse> listarAtivos = profissionalUseCase.listarProfissionaisAtivos()
+                .stream()
+                .map(ProfissionalDtoMapper::toResponse)
+                .toList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(listarAtivos);
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<ProfissionalResponse> atualizarProfissional(@PathVariable Long id, @RequestBody ProfissionalRequest profissionalRequest) {
         Profissional model = profissionalUseCase.atualizarProfissional(id, requestToDomain(profissionalRequest));

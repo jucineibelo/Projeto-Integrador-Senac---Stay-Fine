@@ -43,6 +43,10 @@ public class ProdutoUseCaseImpl implements ProdutoUseCase {
 
     @Override
     public List<Produto> listarProdutos() {
+        if (gateway.listarProdutos().isEmpty()) {
+            throw new DomainException("A lista de produtos está vazia");
+        }
+
         return gateway.listarProdutos();
     }
 

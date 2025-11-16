@@ -5,9 +5,10 @@ import com.stayfine.stayfine.core.domain.model.Agendamento;
 import java.util.List;
 
 public interface AgendamentoUseCase {
+
     Agendamento inserirAgendamento(Agendamento agendamento);
 
-    Agendamento buscarAgendamento(Agendamento agendamento);
+    Agendamento buscarAgendamento(Long id);
 
     List<Agendamento> listarAgendamentos();
 

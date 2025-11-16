@@ -47,7 +47,7 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
     }
 
     @Override
-    public List<Profissional> buscarProfissionais() {
+    public List<Profissional> listarProfissionais() {
         return repository.findAll().stream()
                 .map(ProfissionalMapper::toDomain)
                 .collect(Collectors.toList());
@@ -66,6 +66,14 @@ public class ProfissionalPersistenceAdapter implements ProfissionalGateway {
     public void excluirProfissional(Profissional profissional) {
         repository.save(toDbEntity(profissional));
         log.debug("Profissional marcado como EXCLUIDO id={}", profissional.getId());
+    }
+
+    @Override
+    public List<Profissional> listarProfissionaisAtivos() {
+        return repository.listarAtivos()
+                .stream()
+                .map(ProfissionalMapper::toDomain)
+                .collect(Collectors.toList());
     }
 }
 

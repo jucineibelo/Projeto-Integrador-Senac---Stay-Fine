@@ -1,8 +1,6 @@
 package com.stayfine.stayfine.infrastructure.database.entity;
 
-
 import jakarta.persistence.*;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 

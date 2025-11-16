@@ -43,6 +43,11 @@ public class PagamentoUseCaseImpl implements PagamentoUseCase {
 
     @Override
     public List<Pagamento> listarPagamentos() {
+
+        if (gateway.listarPagamentos().isEmpty()) {
+            throw new DomainException("A lista de pagamentos está vazia");
+        }
+
         return gateway.listarPagamentos();
     }
 

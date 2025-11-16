@@ -42,10 +42,10 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
     @Override
     public List<Profissional> buscarProfissionais() {
 
-        if (gateway.buscarProfissionais().isEmpty()) {
+        if (gateway.listarProfissionais().isEmpty()) {
             throw new DomainException("A lista está vazia!");
         }
-        return gateway.buscarProfissionais();
+        return gateway.listarProfissionais();
     }
 
     @Override
@@ -77,5 +77,16 @@ public class ProfissionalUseCaseImpl implements ProfissionalUseCase {
         buscarProfissional.setStatus(DomainStatus.EXCLUIDO.name());
         buscarProfissional.setDataAtualizacao(OffsetDateTime.now());
         gateway.excluirProfissional(buscarProfissional);
+    }
+
+    @Override
+    public List<Profissional> listarProfissionaisAtivos() {
+        List<Profissional> profissionaisAtivos = gateway.listarProfissionaisAtivos();
+
+        if (profissionaisAtivos.isEmpty()) {
+            throw new DomainException("Nenhum profissional ativo encontrado.");
+        }
+
+        return profissionaisAtivos;
     }
 }

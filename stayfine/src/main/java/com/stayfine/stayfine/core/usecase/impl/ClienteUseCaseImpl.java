@@ -40,6 +40,10 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
 
     @Override
     public List<Cliente> listarCliente() {
+
+        if (gateway.listarClientes().isEmpty()) {
+            throw new DomainException("A lista de clientes está vazia");
+        }
         return gateway.listarClientes();
     }
 
