@@ -1,8 +1,7 @@
 package com.stayfine.stayfine.entrypoint.dto;
 
-public record ProdutoRequest(
+public record PagamentoRequest(
         String descricao,
-        Double preco
+        String tipo
 ) {
-
 }

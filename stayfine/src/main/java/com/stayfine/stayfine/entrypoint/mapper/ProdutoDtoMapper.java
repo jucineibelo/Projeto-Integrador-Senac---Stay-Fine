@@ -7,7 +7,7 @@ import com.stayfine.stayfine.entrypoint.dto.ProdutoResponse;
 public class ProdutoDtoMapper {
 
     public static Produto requestToDomain(ProdutoRequest request) {
-        return new Produto(request.getDescricao(), request.getPreco());
+        return new Produto(request.descricao(), request.preco());
     }
 
     public static ProdutoResponse domainToResponse(Produto produto) {

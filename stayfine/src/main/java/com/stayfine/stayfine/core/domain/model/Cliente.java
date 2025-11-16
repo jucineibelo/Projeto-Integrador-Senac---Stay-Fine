@@ -17,6 +17,16 @@ public class Cliente {
     }
 
 
+    public Cliente(Long id, String nome, String email, String telefone, OffsetDateTime dataCadastro,
+                   OffsetDateTime dataAtualizacao, String status) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+        this.dataCadastro = dataCadastro;
+        this.dataAtualizacao = dataAtualizacao;
+        this.status = status;
+    }
 
     public Cliente(Long id, String nome, String email, String telefone, OffsetDateTime dataCadastro,
                    OffsetDateTime dataAtualizacao, String status, String username, String password) {
@@ -27,6 +37,14 @@ public class Cliente {
         this.dataCadastro = dataCadastro;
         this.dataAtualizacao = dataAtualizacao;
         this.status = status;
+        this.username = username;
+        this.password = password;
+    }
+
+    public Cliente(String nome, String email, String telefone, String username, String password) {
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
         this.username = username;
         this.password = password;
     }

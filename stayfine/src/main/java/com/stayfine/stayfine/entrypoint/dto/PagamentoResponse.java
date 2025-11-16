@@ -2,13 +2,12 @@ package com.stayfine.stayfine.entrypoint.dto;
 
 import java.time.OffsetDateTime;
 
-public record ProdutoResponse(
+public record PagamentoResponse(
         Long id,
         String descricao,
-        Double preco,
         OffsetDateTime dataCadastro,
         OffsetDateTime dataAtualizacao,
-        String status
+        String status,
+        String tipo
 ) {
-
 }

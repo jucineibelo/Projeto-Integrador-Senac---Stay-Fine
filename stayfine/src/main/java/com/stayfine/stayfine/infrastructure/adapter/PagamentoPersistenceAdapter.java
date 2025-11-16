@@ -2,33 +2,64 @@ package com.stayfine.stayfine.infrastructure.adapter;
 
 import com.stayfine.stayfine.core.domain.model.Pagamento;
 import com.stayfine.stayfine.core.gateway.PagamentoGateway;
+import com.stayfine.stayfine.infrastructure.database.entity.PagamentoDBEntity;
+import com.stayfine.stayfine.infrastructure.database.repository.PagamentoRepository;
+import com.stayfine.stayfine.infrastructure.mapper.PagamentoMapper;
+import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public class PagamentoPersistenceAdapter implements PagamentoGateway{
+import static com.stayfine.stayfine.infrastructure.mapper.PagamentoMapper.toDbEntity;
+import static com.stayfine.stayfine.infrastructure.mapper.PagamentoMapper.toDomain;
+
+@Service
+public class PagamentoPersistenceAdapter implements PagamentoGateway {
+
+    private static final Logger log = LoggerFactory.getLogger(PagamentoPersistenceAdapter.class);
+    private final PagamentoRepository repository;
+
+    public PagamentoPersistenceAdapter(PagamentoRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
+    @Transactional
     public Pagamento inserirPagamento(Pagamento pagamento) {
-        return null;
+        PagamentoDBEntity pagamentoDB = repository.save(toDbEntity(pagamento));
+        log.debug("Inserindo pagamento: {}", pagamento);
+        return toDomain(pagamentoDB);
     }
 
     @Override
     public Pagamento buscarPagamento(Long id) {
-        return null;
+        PagamentoDBEntity pagamentoDB = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id + " Pagamento não encontrado na base de dados"));
+
+        return toDomain(pagamentoDB);
     }
 
     @Override
     public List<Pagamento> listarPagamentos() {
-        return List.of();
+        return repository.findAll()
+                .stream()
+                .map(PagamentoMapper::toDomain)
+                .toList();
     }
 
     @Override
+    @Transactional
     public Pagamento atualizarPagamento(Pagamento pagamento) {
-        return null;
+        log.debug("Atualizando pagamento: {}", pagamento);
+        return toDomain(repository.save(toDbEntity(pagamento)));
     }
 
     @Override
     public void excluirPagamento(Pagamento pagamento) {
-
+        repository.save(toDbEntity(pagamento));
+        log.debug("Pagamento excluído id={}", pagamento.getId());
     }
 }

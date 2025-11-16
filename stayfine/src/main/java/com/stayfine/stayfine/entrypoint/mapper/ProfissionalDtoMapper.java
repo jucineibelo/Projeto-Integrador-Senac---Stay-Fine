@@ -6,14 +6,7 @@ import com.stayfine.stayfine.entrypoint.dto.ProfissionalResponse;
 
 public class ProfissionalDtoMapper {
 
-    public static ProfissionalRequest domainToRequest(Profissional profissional) {
-        return new ProfissionalRequest(
-                profissional.getId(),
-                profissional.getNome()
-        );
-    }
-
-    public static ProfissionalResponse domainToResponse(Profissional profissional) {
+    public static ProfissionalResponse toResponse(Profissional profissional) {
         return new ProfissionalResponse(
                 profissional.getId(),
                 profissional.getNome(),
@@ -24,16 +17,6 @@ public class ProfissionalDtoMapper {
     }
 
     public static Profissional requestToDomain(ProfissionalRequest request) {
-        return new Profissional(request.getNome());
-    }
-
-    public static Profissional responseToDomain(ProfissionalResponse response) {
-        return new Profissional(
-                response.getId(),
-                response.getNome(),
-                response.getStatus(),
-                response.getDataRegistro(),
-                response.getDataAtualizacao()
-        );
+        return new Profissional(request.nome());
     }
 }

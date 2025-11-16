@@ -7,7 +7,7 @@ import com.stayfine.stayfine.infrastructure.database.entity.ProdutoDBEntity;
 
 public class PagamentoMapper {
 
-    public PagamentoDBEntity toDbEntity(Pagamento pagamento) {
+    public static PagamentoDBEntity toDbEntity(Pagamento pagamento) {
         return new PagamentoDBEntity(
                 pagamento.getId(),
                 pagamento.getDescricao(),
@@ -17,7 +17,7 @@ public class PagamentoMapper {
                 pagamento.getStatus());
     }
 
-    public Pagamento toDomain(PagamentoDBEntity entity) {
+    public static Pagamento toDomain(PagamentoDBEntity entity) {
         return new Pagamento(
 
                 entity.getId(),

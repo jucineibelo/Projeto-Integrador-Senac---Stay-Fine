@@ -26,20 +26,20 @@ public class ProfissionalController {
     @PostMapping
     public ResponseEntity<ProfissionalResponse> inserir(@RequestBody ProfissionalRequest request) {
         Profissional profissional = requestToDomain(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(domainToResponse(profissionalUseCase.inserirProfissional(profissional)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(profissionalUseCase.inserirProfissional(profissional)));
     }
 
     @GetMapping("{id}")
     public ResponseEntity<ProfissionalResponse> buscarId(@PathVariable Long id) {
         Profissional profissional = profissionalUseCase.buscarProfissional(id);
-        return ResponseEntity.ok(domainToResponse(profissional));
+        return ResponseEntity.ok(toResponse(profissional));
     }
 
     @GetMapping
     public ResponseEntity<List<ProfissionalResponse>> listarTodos() {
         List<ProfissionalResponse> listaProfissionais = profissionalUseCase.buscarProfissionais()
                 .stream()
-                .map(ProfissionalDtoMapper::domainToResponse)
+                .map(ProfissionalDtoMapper::toResponse)
                 .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(listaProfissionais);
@@ -48,7 +48,7 @@ public class ProfissionalController {
     @PutMapping("{id}")
     public ResponseEntity<ProfissionalResponse> atualizarProfissional(@PathVariable Long id, @RequestBody ProfissionalRequest profissionalRequest) {
         Profissional model = profissionalUseCase.atualizarProfissional(id, requestToDomain(profissionalRequest));
-        return ResponseEntity.status(HttpStatus.OK).body(domainToResponse(model));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponse(model));
     }
 
     @DeleteMapping("{id}")

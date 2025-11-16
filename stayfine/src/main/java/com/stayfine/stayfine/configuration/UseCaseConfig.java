@@ -1,12 +1,15 @@
 package com.stayfine.stayfine.configuration;
 
 import com.stayfine.stayfine.core.gateway.ClienteGateway;
+import com.stayfine.stayfine.core.gateway.PagamentoGateway;
 import com.stayfine.stayfine.core.gateway.ProdutoGateway;
 import com.stayfine.stayfine.core.gateway.ProfissionalGateway;
 import com.stayfine.stayfine.core.usecase.ClienteUseCase;
+import com.stayfine.stayfine.core.usecase.PagamentoUseCase;
 import com.stayfine.stayfine.core.usecase.ProdutoUseCase;
 import com.stayfine.stayfine.core.usecase.ProfissionalUseCase;
 import com.stayfine.stayfine.core.usecase.impl.ClienteUseCaseImpl;
+import com.stayfine.stayfine.core.usecase.impl.PagamentoUseCaseImpl;
 import com.stayfine.stayfine.core.usecase.impl.ProdutoUseCaseImpl;
 import com.stayfine.stayfine.core.usecase.impl.ProfissionalUseCaseImpl;
 import org.springframework.context.annotation.Bean;
@@ -21,12 +24,17 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public ProdutoUseCase produtoUseCaseImpl(ProdutoGateway produtoGateway){
+    public ProdutoUseCase produtoUseCaseImpl(ProdutoGateway produtoGateway) {
         return new ProdutoUseCaseImpl(produtoGateway);
     }
 
     @Bean
-    public ClienteUseCase clienteUseCaseImpl(ClienteGateway clienteGateway){
+    public ClienteUseCase clienteUseCaseImpl(ClienteGateway clienteGateway) {
         return new ClienteUseCaseImpl(clienteGateway);
+    }
+
+    @Bean
+    public PagamentoUseCase pagamentoUseCaseImpl(PagamentoGateway pagamentoGateway) {
+        return new PagamentoUseCaseImpl(pagamentoGateway);
     }
 }
