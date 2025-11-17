@@ -2,6 +2,7 @@ package com.stayfine.stayfine.entrypoint.mapper;
 
 import com.stayfine.stayfine.core.domain.model.*;
 import com.stayfine.stayfine.entrypoint.dto.AgendamentoRequest;
+import com.stayfine.stayfine.entrypoint.dto.AgendamentoRequestUpdate;
 import com.stayfine.stayfine.entrypoint.dto.AgendamentoResponse;
 
 public class AgendamentoDtoMapper {
@@ -27,6 +28,14 @@ public class AgendamentoDtoMapper {
                 new Pagamento(request.pagamentoId()),
                 new Profissional(request.profissionalId()),
                 request.produtosIds().stream().map(Produto::new).toList(),
+                request.dataAgendamento()
+        );
+    }
+
+    public static Agendamento requestUpdateToDomain(AgendamentoRequestUpdate request) {
+        return new Agendamento(
+                new Pagamento(request.pagamentoId()),
+                new Profissional(request.profissionalId()),
                 request.dataAgendamento()
         );
     }

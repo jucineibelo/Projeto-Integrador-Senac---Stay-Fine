@@ -39,6 +39,12 @@ public class Agendamento {
         this.dataAgendamento = offsetDateTime;
     }
 
+    public Agendamento(Pagamento pagamento, Profissional profissional, OffsetDateTime offsetDateTime) {
+        this.pagamento = pagamento;
+        this.profissional = profissional;
+        this.dataAgendamento = offsetDateTime;
+    }
+
     public Long getId() {
         return id;
     }

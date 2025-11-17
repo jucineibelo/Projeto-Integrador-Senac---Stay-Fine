@@ -10,6 +10,8 @@ import com.stayfine.stayfine.core.usecase.AgendamentoUseCase;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static com.stayfine.stayfine.core.util.DomainUtil.deveAtualizar;
+
 public class AgendamentoUseCaseImpl implements AgendamentoUseCase {
 
     private final AgendamentoGateway gateway;
@@ -75,7 +77,35 @@ public class AgendamentoUseCaseImpl implements AgendamentoUseCase {
 
     @Override
     public Agendamento atualizarAgendamento(Long id, Agendamento agendamento) {
-        return null;
+
+        if (id == null || agendamento == null) {
+            throw new DomainException("Agendamento ou id está vazio");
+        }
+
+        Agendamento agendamentoExistente = buscarAgendamento(id);
+
+        boolean atualizou = false;
+
+        if (agendamentoExistente.getDataAgendamento() != agendamento.getDataAgendamento()){
+            agendamentoExistente.setDataAgendamento(agendamento.getDataAgendamento());
+            atualizou = true;
+        }
+
+        if (agendamentoExistente.getProfissional() != agendamento.getProfissional()){
+            agendamentoExistente.setProfissional(agendamento.getProfissional());
+            atualizou = true;
+        }
+
+        if (agendamentoExistente.getPagamento() != agendamento.getPagamento()){
+            agendamentoExistente.setPagamento(agendamento.getPagamento());
+            atualizou = true;
+        }
+
+        if (atualizou) {
+            agendamentoExistente.setDataAtualizacao(OffsetDateTime.now());
+        }
+
+        return gateway.atualizarAgendamento(agendamentoExistente);
     }
 
     @Override
