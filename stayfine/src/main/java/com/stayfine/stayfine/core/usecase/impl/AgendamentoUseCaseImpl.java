@@ -52,9 +52,6 @@ public class AgendamentoUseCaseImpl implements AgendamentoUseCase {
                 .toList();
 
         agendamento.setProdutos(produtos);
-
-
-        // Preenche campos de sistema
         agendamento.setDataCadastro(OffsetDateTime.now());
         agendamento.setStatus(DomainStatus.ATIVO.name());
 

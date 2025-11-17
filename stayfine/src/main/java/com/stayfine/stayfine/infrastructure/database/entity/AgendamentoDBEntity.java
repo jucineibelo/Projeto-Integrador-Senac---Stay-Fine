@@ -33,7 +33,7 @@ public class AgendamentoDBEntity {
 
     // Relacionamento 1:1 - um agendamento tem 1 pagamento
     @OneToOne
-    @JoinColumn(name = "pagamento_id", insertable = false, updatable = false)
+    @JoinColumn(name = "pagamento_id")
     private PagamentoDBEntity pagamento;
 
     // Agendamento pode ter vários produtos, e produtos podem aparecer em vários agendamentos

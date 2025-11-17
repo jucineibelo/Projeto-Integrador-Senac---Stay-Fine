@@ -36,10 +36,11 @@ public class ProdutoPersistenceAdapter implements ProdutoGateway {
     @Override
     public Produto buscarProduto(Long id) {
 
-        ProdutoDBEntity produtoDB = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException(id + " Produto não encontrado na base de dados"));
+        if (!repository.existsByIdAndStatus(id, "ATIVO")) {
+            throw new RuntimeException("Produto " + id + " não encontrado ou excluído na base de dados");
+        }
 
-        return toDomain(produtoDB);
+        return toDomain(repository.findById(id).orElseThrow());
     }
 
     @Override

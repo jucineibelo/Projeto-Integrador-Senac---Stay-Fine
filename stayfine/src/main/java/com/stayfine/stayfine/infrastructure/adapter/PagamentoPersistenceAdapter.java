@@ -36,10 +36,12 @@ public class PagamentoPersistenceAdapter implements PagamentoGateway {
 
     @Override
     public Pagamento buscarPagamento(Long id) {
-        PagamentoDBEntity pagamentoDB = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(id + " Pagamento não encontrado na base de dados"));
 
-        return toDomain(pagamentoDB);
+        if (!repository.existsByIdAndStatus(id, "ATIVO")) {
+            throw new EntityNotFoundException(id + " Pagamento não encontrado ou excluído na base de dados");
+        }
+
+        return toDomain(repository.findById(id).orElseThrow());
     }
 
     @Override

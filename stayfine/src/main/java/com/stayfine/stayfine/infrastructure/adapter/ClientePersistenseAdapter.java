@@ -36,10 +36,12 @@ public class ClientePersistenseAdapter implements ClienteGateway {
 
     @Override
     public Cliente buscarCliente(Long id) {
-        ClienteDBEntity clienteDBEntity = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente " + id + " não encontrado na base de dados"));
 
-        return toDomain(clienteDBEntity);
+        if (!repository.existsByIdAndStatus(id, "ATIVO")) {
+            throw new EntityNotFoundException("Cliente " + id + " não encontrado ou excluído na base de dados");
+        }
+
+        return toDomain(repository.findById(id).orElseThrow());
     }
 
     @Override
