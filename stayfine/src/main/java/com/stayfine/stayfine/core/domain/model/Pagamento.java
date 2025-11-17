@@ -13,12 +13,17 @@ public class Pagamento {
     public Pagamento() {
     }
 
+    public Pagamento(Long id) {
+        this.id = id;
+    }
+
     public Pagamento(String descricao, String tipo) {
         this.descricao = descricao;
         this.tipo = tipo;
     }
 
-    public Pagamento(Long id, String descricao, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String status, String tipo) {
+    public Pagamento(Long id, String descricao, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao,
+                     String status, String tipo) {
         this.id = id;
         this.descricao = descricao;
         this.dataCadastro = dataCadastro;

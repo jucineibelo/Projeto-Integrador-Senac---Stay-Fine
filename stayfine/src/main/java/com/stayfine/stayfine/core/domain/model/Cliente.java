@@ -16,6 +16,9 @@ public class Cliente {
     public Cliente() {
     }
 
+    public Cliente(Long id) {
+        this.id = id;
+    }
 
     public Cliente(Long id, String nome, String email, String telefone, OffsetDateTime dataCadastro,
                    OffsetDateTime dataAtualizacao, String status) {

@@ -8,6 +8,7 @@ import com.stayfine.stayfine.core.usecase.PagamentoUseCase;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static com.stayfine.stayfine.core.domain.enums.DomainStatus.ATIVO;
 import static com.stayfine.stayfine.core.domain.enums.DomainStatus.INATIVO;
 import static com.stayfine.stayfine.core.util.DomainUtil.deveAtualizar;
 
@@ -27,7 +28,7 @@ public class PagamentoUseCaseImpl implements PagamentoUseCase {
         }
 
         pagamento.setDataCadastro(OffsetDateTime.now());
-        pagamento.setStatus("ATIVO");
+        pagamento.setStatus(ATIVO.name());
         return gateway.inserirPagamento(pagamento);
     }
 

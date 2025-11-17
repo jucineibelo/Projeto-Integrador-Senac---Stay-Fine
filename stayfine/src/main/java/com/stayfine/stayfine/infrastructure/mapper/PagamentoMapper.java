@@ -13,8 +13,8 @@ public class PagamentoMapper {
                 pagamento.getDescricao(),
                 pagamento.getDataCadastro(),
                 pagamento.getDataAtualizacao(),
-                pagamento.getTipo(),
-                pagamento.getStatus());
+                pagamento.getStatus(),
+                pagamento.getTipo());
     }
 
     public static Pagamento toDomain(PagamentoDBEntity entity) {
@@ -24,7 +24,7 @@ public class PagamentoMapper {
                 entity.getDescricao(),
                 entity.getDataCadastro(),
                 entity.getDataAtualizacao(),
-                entity.getTipo(),
-                entity.getStatus());
+                entity.getStatus(),
+                entity.getTipo());
     }
 }

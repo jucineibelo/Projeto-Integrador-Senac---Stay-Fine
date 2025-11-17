@@ -25,6 +25,10 @@ public class Profissional {
         this.nome = nome;
     }
 
+    public Profissional(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

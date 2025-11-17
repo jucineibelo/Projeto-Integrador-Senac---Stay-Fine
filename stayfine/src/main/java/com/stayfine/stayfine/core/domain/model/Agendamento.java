@@ -14,8 +14,6 @@ public class Agendamento {
     private List<Produto> produtos;
     private OffsetDateTime dataAgendamento;
 
-    public Agendamento() {
-    }
 
     public Agendamento(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String status,
                        Cliente cliente, Pagamento pagamento, Profissional profissional, List<Produto> produtos,
@@ -29,6 +27,16 @@ public class Agendamento {
         this.profissional = profissional;
         this.produtos = produtos;
         this.dataAgendamento = dataAgendamento;
+    }
+
+    public Agendamento(Cliente cliente, Pagamento pagamento, Profissional profissional, List<Produto> produtos,
+                       OffsetDateTime offsetDateTime) {
+
+        this.cliente = cliente;
+        this.pagamento = pagamento;
+        this.profissional = profissional;
+        this.produtos = produtos;
+        this.dataAgendamento = offsetDateTime;
     }
 
     public Long getId() {

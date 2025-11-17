@@ -14,7 +14,7 @@ import java.util.List;
 import static com.stayfine.stayfine.entrypoint.mapper.ProdutoDtoMapper.domainToResponse;
 import static com.stayfine.stayfine.entrypoint.mapper.ProdutoDtoMapper.requestToDomain;
 
-@RequestMapping("produto")
+@RequestMapping("produtos")
 @RestController
 public class ProdutoController {
 

@@ -78,7 +78,10 @@ public class AgendamentoPersistenceAdapter implements AgendamentoGateway {
             throw new EntityNotFoundException("Nenhum agendamento encontrado na base de dados");
         }
 
-        return repository.findAll().stream().map(AgendamentoMapper::toDomain).toList();
+        return repository.findAll()
+                .stream()
+                .map(AgendamentoMapper::toDomain)
+                .toList();
     }
 
     @Override

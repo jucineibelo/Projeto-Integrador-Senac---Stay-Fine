@@ -16,7 +16,7 @@ public class AgendamentoDBEntity {
     private OffsetDateTime dataCadastro;
 
     @Column(name = "data_atualizacao")
-    private OffsetDateTime dataAtualização;
+    private OffsetDateTime dataAtualizacao;
 
     @Column(name = "status")
     private String status;
@@ -32,8 +32,8 @@ public class AgendamentoDBEntity {
     private ProfissionalDBEntity profissional;
 
     // Relacionamento 1:1 - um agendamento tem 1 pagamento
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pagamento_id")
+    @OneToOne
+    @JoinColumn(name = "pagamento_id", insertable = false, updatable = false)
     private PagamentoDBEntity pagamento;
 
     // Agendamento pode ter vários produtos, e produtos podem aparecer em vários agendamentos
@@ -52,12 +52,12 @@ public class AgendamentoDBEntity {
 
     }
 
-    public AgendamentoDBEntity(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualização, String status,
+    public AgendamentoDBEntity(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String status,
                                ClienteDBEntity cliente, ProfissionalDBEntity profissional, PagamentoDBEntity pagamento,
                                List<ProdutoDBEntity> produtos, OffsetDateTime dataAgendamento) {
         this.id = id;
         this.dataCadastro = dataCadastro;
-        this.dataAtualização = dataAtualização;
+        this.dataAtualizacao = dataAtualizacao;
         this.status = status;
         this.cliente = cliente;
         this.profissional = profissional;
@@ -82,12 +82,12 @@ public class AgendamentoDBEntity {
         this.dataCadastro = dataCadastro;
     }
 
-    public OffsetDateTime getDataAtualização() {
-        return dataAtualização;
+    public OffsetDateTime getDataAtualizacao() {
+        return dataAtualizacao;
     }
 
-    public void setDataAtualização(OffsetDateTime dataAtualização) {
-        this.dataAtualização = dataAtualização;
+    public void setDataAtualizacao(OffsetDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public String getStatus() {

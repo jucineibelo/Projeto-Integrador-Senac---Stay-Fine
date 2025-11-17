@@ -30,7 +30,16 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public AgendamentoUseCase agendamentoUseCaseImpl(AgendamentoGateway agendamentoGateway) {
-        return new AgendamentoUseCaseImpl(agendamentoGateway);
+    public AgendamentoUseCase agendamentoUseCaseImpl(AgendamentoGateway agendamentoGateway, ClienteGateway clienteGateway,
+                                                     PagamentoGateway pagamentoGateway,
+                                                     ProfissionalGateway profissionalGateway,
+                                                     ProdutoGateway produtoGateway) {
+        return new AgendamentoUseCaseImpl(
+                agendamentoGateway,
+                clienteGateway,
+                pagamentoGateway,
+                profissionalGateway,
+                produtoGateway
+        );
     }
 }

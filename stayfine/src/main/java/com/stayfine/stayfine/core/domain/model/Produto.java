@@ -13,6 +13,10 @@ public class Produto {
     public Produto() {
     }
 
+    public Produto(Long id) {
+        this.id = id;
+    }
+
     public Produto(String descricao, Double preco) {
         this.descricao = descricao;
         this.preco = preco;

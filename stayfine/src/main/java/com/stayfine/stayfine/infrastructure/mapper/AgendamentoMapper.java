@@ -1,11 +1,7 @@
 package com.stayfine.stayfine.infrastructure.mapper;
 
 import com.stayfine.stayfine.core.domain.model.Agendamento;
-import com.stayfine.stayfine.core.domain.model.Produto;
 import com.stayfine.stayfine.infrastructure.database.entity.AgendamentoDBEntity;
-import com.stayfine.stayfine.infrastructure.database.entity.ProdutoDBEntity;
-
-import java.util.List;
 
 public class AgendamentoMapper {
 
@@ -30,7 +26,7 @@ public class AgendamentoMapper {
         return new Agendamento(
                 entity.getId(),
                 entity.getDataCadastro(),
-                entity.getDataAtualização(),
+                entity.getDataAtualizacao(),
                 entity.getStatus(),
                 ClienteMapper.toDomain(entity.getCliente()),
                 PagamentoMapper.toDomain(entity.getPagamento()),
