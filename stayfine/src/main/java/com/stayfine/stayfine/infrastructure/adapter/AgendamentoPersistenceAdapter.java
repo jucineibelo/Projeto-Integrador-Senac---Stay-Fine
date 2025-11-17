@@ -63,7 +63,14 @@ public class AgendamentoPersistenceAdapter implements AgendamentoGateway {
 
     @Override
     public Agendamento atualizarAgendamento(Agendamento agendamento) {
-        return null;
+        AgendamentoDBEntity agendamentoDB = toDbEntity(agendamento);
+
+        if (repository.existeConflito(agendamentoDB.getProfissional().getId(),
+                agendamentoDB.getDataAgendamento())) {
+            throw new IllegalArgumentException("Conflito de agendamento para o profissional no horário informado.");
+        }
+
+        return toDomain(repository.save(agendamentoDB));
     }
 
     @Override
