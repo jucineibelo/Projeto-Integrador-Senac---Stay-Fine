@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Clientes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <a href="index.html" class="btn btn-secondary mb-3">⬅ Voltar</a>
+
+    <h2 class="mb-4">Cadastro de Clientes</h2>
+
+    <!-- FORMULÁRIO DE CADASTRO -->
+    <div class="card p-3 mb-4">
+        <form id="formCliente">
+            <input id="clienteNome" class="form-control mb-2" placeholder="Nome" required>
+            <input id="clienteTelefone" class="form-control mb-2" placeholder="Telefone" required>
+            <input id="clienteEmail" class="form-control mb-2" placeholder="Email" required>
+            <input id="clienteUsername" class="form-control mb-2" placeholder="Username" required>
+            <input id="clientePassword" type="password" class="form-control mb-2" placeholder="Password" required>
+
+            <button class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+
+    <!-- BUSCAR POR ID -->
+    <div class="card p-3 mb-4">
+        <h5>Buscar Cliente por ID</h5>
+        <div class="d-flex">
+            <input id="buscarId" type="number" class="form-control me-2" placeholder="ID">
+            <button class="btn btn-info" onclick="buscarPorId()">Buscar</button>
+        </div>
+        <div id="resultadoBusca" class="mt-3"></div>
+    </div>
+
+    <h3>Clientes Cadastrados</h3>
+
+    <!-- TABELA -->
+    <table class="table table-striped mt-2">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Status</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Data Cadastro</th>
+            <th>Data Atualização</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody id="clientesTable"></tbody>
+    </table>
+
+</div>
+
+<!-- MODAL DE EDIÇÃO -->
+<div class="modal fade" id="modalEdicao" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <input type="hidden" id="editId">
+
+                <label>Nome:</label>
+                <input id="editNome" class="form-control mb-2">
+
+                <label>Telefone:</label>
+                <input id="editTelefone" class="form-control mb-2">
+
+                <label>Email:</label>
+                <input id="editEmail" class="form-control mb-2">
+
+                <label>Username:</label>
+                <input id="editUsername" class="form-control mb-2">
+
+                <label>Password:</label>
+                <input id="editPassword" class="form-control mb-2">
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary" onclick="salvarEdicao()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+    const api = "http://localhost:8080";
+
+    /* ----------------------- CARREGAR LISTA ------------------------- */
+    async function loadClientes() {
+        const res = await fetch(api + "/clientes");
+        const data = await res.json();
+
+        document.getElementById("clientesTable").innerHTML =
+            data.map(c => `
+                <tr>
+                    <td>${c.id}</td>
+                    <td>${c.nome}</td>
+                    <td>${c.email}</td>
+                    <td>${c.telefone}</td>
+                    <td>${c.status ?? '-'}</td>
+                    <td>${c.username ?? '-'}</td>
+                    <td>${c.password ? '*****' : '-'}</td>
+                    <td>${formatarData(c.dataCadastro)}</td>
+                    <td>${formatarData(c.dataAtualizacao)}</td>
+
+                    <td>
+                        <button class="btn btn-warning btn-sm"
+                            onclick="abrirModalEdicao(${c.id}, '${c.nome}', '${c.telefone}', '${c.email}', '${c.username}', '${c.password}')">
+                            Editar
+                        </button>
+
+                        <button class="btn btn-danger btn-sm ms-2"
+                            onclick="excluirCliente(${c.id})">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>`
+            ).join("");
+    }
+
+    /* ----------------------- SALVAR NOVO ------------------------- */
+    document.getElementById("formCliente").onsubmit = async e => {
+        e.preventDefault();
+
+        await fetch(api + "/clientes", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nome: clienteNome.value,
+                telefone: clienteTelefone.value,
+                email: clienteEmail.value,
+                username: clienteUsername.value,
+                password: clientePassword.value
+            })
+        });
+
+        clienteNome.value = "";
+        clienteTelefone.value = "";
+        clienteEmail.value = "";
+        clienteUsername.value = "";
+        clientePassword.value = "";
+
+        loadClientes();
+    };
+
+    /* ----------------------- BUSCAR POR ID ------------------------- */
+    async function buscarPorId() {
+        const id = buscarId.value;
+        if (!id) return;
+
+        const res = await fetch(api + "/clientes/" + id);
+
+        if (!res.ok) {
+            resultadoBusca.innerHTML = `<div class="alert alert-danger">Cliente não encontrado.</div>`;
+            return;
+        }
+
+        const c = await res.json();
+
+        resultadoBusca.innerHTML = `
+            <div class="alert alert-success">
+                <strong>ID:</strong> ${c.id}<br>
+                <strong>Nome:</strong> ${c.nome}<br>
+                <strong>Email:</strong> ${c.email}<br>
+                <strong>Telefone:</strong> ${c.telefone}<br>
+                <strong>Status:</strong> ${c.status}<br>
+                <strong>Username:</strong> ${c.username}<br>
+                <strong>Password:</strong> ***** <br>
+                <strong>Data Cadastro:</strong> ${formatarData(c.dataCadastro)}<br>
+                <strong>Data Atualização:</strong> ${formatarData(c.dataAtualizacao)}
+            </div>
+        `;
+    }
+
+    /* ----------------------- ABRIR MODAL ------------------------- */
+    function abrirModalEdicao(id, nome, telefone, email, username, password) {
+        editId.value = id;
+        editNome.value = nome;
+        editTelefone.value = telefone;
+        editEmail.value = email;
+        editUsername.value = username;
+        editPassword.value = password;
+
+        const modal = new bootstrap.Modal(modalEdicao);
+        modal.show();
+    }
+
+    /* ----------------------- EDITAR ------------------------- */
+    async function salvarEdicao() {
+
+        await fetch(api + "/clientes/" + editId.value, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nome: editNome.value,
+                telefone: editTelefone.value,
+                email: editEmail.value,
+                username: editUsername.value,
+                password: editPassword.value
+            })
+        });
+
+        bootstrap.Modal.getInstance(modalEdicao).hide();
+        loadClientes();
+    }
+
+    /* ----------------------- EXCLUIR ------------------------- */
+    async function excluirCliente(id) {
+        if (!confirm("Deseja excluir este cliente?")) return;
+
+        await fetch(api + "/clientes/" + id, { method: "DELETE" });
+
+        loadClientes();
+    }
+
+    /* ----------------------- FORMATAR DATA ------------------------- */
+    function formatarData(d) {
+        if (!d) return "-";
+        const data = new Date(d);
+        return data.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+    }
+
+    loadClientes();
+</script>
+
+</body>
+</html>
