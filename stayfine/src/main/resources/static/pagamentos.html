@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Profissionais - StayFine</title>
+    <title>Cadastro de Pagamentos - StayFine</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -22,13 +22,13 @@
         }
 
         .btn-gold {
-            color: #c9a86a;
-            border-color: #c9a86a;
+            color: #c9a86a !important;
+            border-color: #c9a86a !important;
         }
 
         .btn-gold:hover {
-            background: #c9a86a;
-            color: #000;
+            background: #c9a86a !important;
+            color: #000 !important;
         }
 
         table {
@@ -48,24 +48,41 @@
             cursor: pointer;
             color: #c9a86a;
             margin-right: 10px;
-            transition: 0.2s;
+            transition: .2s;
         }
 
         .icon-action:hover {
             color: #e6c68b;
         }
 
-        input, .form-control {
-            background: #111 !important;
+        /* Inputs */
+        input, select, textarea, .form-control {
+            background: #1a1a1a !important;
             color: white !important;
             border: 1px solid #333 !important;
-            border-radius: 8px !important;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #c9a86a !important;
+            box-shadow: 0 0 5px rgba(201,168,106,0.5) !important;
+        }
+
+        /* Placeholder visível */
+        ::placeholder {
+            color: #c9c9c9 !important;
+            opacity: 1 !important;
         }
 
         .modal-content {
             background: #111;
             color: #fff;
             border: 1px solid #333;
+        }
+
+        .btn-close-white {
+            filter: invert(1);
         }
 
         a.btn-back {
@@ -76,13 +93,8 @@
         a.btn-back:hover {
             color: #e6c68b;
         }
-
-        /* Placeholder visível */
-        ::placeholder {
-            color: #c9c9c9 !important;
-            opacity: 1;
-        }
     </style>
+
 </head>
 
 <body>
@@ -93,44 +105,55 @@
         <i class="bi bi-arrow-left"></i> Voltar
     </a>
 
-    <h2 class="mb-4">Cadastro de Profissionais</h2>
+    <h2 class="mb-4">Cadastro de Pagamentos</h2>
 
     <!-- FORMULÁRIO -->
     <div class="card-dark mb-4">
-        <form id="formProfissional">
-            <input id="profNome" class="form-control mb-2" placeholder="Nome do profissional" required>
+        <h5 class="mb-3">Novo Pagamento</h5>
+
+        <form id="formPagamento">
+
+            <input id="pagDescricao" class="form-control mb-3"
+                   placeholder="Descrição do pagamento" required>
+
+            <input id="pagTipo" class="form-control mb-2"
+                   placeholder="Ex.: PIX, Crédito, Débito">
+
             <button class="btn btn-gold mt-2">Salvar</button>
         </form>
     </div>
 
     <!-- BUSCAR POR ID -->
     <div class="card-dark mb-4">
-        <h5>Buscar Profissional por ID</h5>
-        <div class="d-flex">
-            <input id="buscarId" type="number" class="form-control me-2" placeholder="ID">
+        <h5 class="mb-3">Buscar Pagamento por ID</h5>
+
+        <div class="d-flex mb-2">
+            <input id="buscarId" type="number" class="form-control me-2"
+                   placeholder="Digite o ID">
             <button class="btn btn-gold" onclick="buscarPorId()">
                 <i class="bi bi-search"></i> Buscar
             </button>
         </div>
 
-        <div id="resultadoBusca" class="mt-3"></div>
+        <div id="resultadoBusca" class="mt-2"></div>
     </div>
 
-    <h3 class="mt-4">Profissionais Cadastrados</h3>
-
     <!-- LISTAGEM -->
+    <h3 class="mt-4">Pagamentos Cadastrados</h3>
+
     <table class="table mt-3">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Tipo</th>
             <th>Status</th>
-            <th>Registro</th>
+            <th>Cadastro</th>
             <th>Atualização</th>
             <th>Ações</th>
         </tr>
         </thead>
-        <tbody id="profTable"></tbody>
+        <tbody id="pagTable"></tbody>
     </table>
 
 </div>
@@ -141,15 +164,20 @@
         <div class="modal-content">
 
             <div class="modal-header border-secondary">
-                <h5 class="modal-title">Editar Profissional</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title">Editar Pagamento</h5>
+                <button type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body">
+
                 <input type="hidden" id="editId">
 
-                <label>Nome:</label>
-                <input id="editNome" class="form-control mb-2" placeholder="Nome">
+                <label class="fw-bold">Descrição</label>
+                <input id="editDescricao" class="form-control mb-3" placeholder="Descrição">
+
+                <label class="fw-bold">Tipo</label>
+                <input id="editTipo" class="form-control" placeholder="Tipo">
             </div>
 
             <div class="modal-footer border-secondary">
@@ -165,53 +193,60 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    const api = "http://localhost:8080";
 
-    async function loadProfissionais() {
-        const res = await fetch(api + "/profissionais");
+    const api = "http://localhost:8080/pagamentos";
+
+    async function loadPagamentos() {
+        const res = await fetch(api);
         const data = await res.json();
 
-        document.getElementById("profTable").innerHTML =
+        document.getElementById("pagTable").innerHTML =
             data.map(p => `
                 <tr>
                     <td>${p.id}</td>
-                    <td>${p.nome}</td>
-                    <td>${p.status ?? '-'}</td>
-                    <td>${formatarData(p.dataRegistro)}</td>
+                    <td>${p.descricao}</td>
+                    <td>${p.tipo ?? "-"}</td>
+                    <td>${p.status ?? "-"}</td>
+                    <td>${formatarData(p.dataCadastro)}</td>
                     <td>${formatarData(p.dataAtualizacao)}</td>
                     <td>
                         <i class="bi bi-pencil-square icon-action"
-                           onclick="abrirModalEdicao(${p.id}, '${p.nome}')"></i>
+                           onclick="abrirModalEdicao(${p.id}, '${p.descricao}', '${p.tipo}')"></i>
 
                         <i class="bi bi-trash3 icon-action"
-                           onclick="excluirProfissional(${p.id})"></i>
+                           onclick="excluirPagamento(${p.id})"></i>
                     </td>
                 </tr>
             `).join("");
     }
 
-    document.getElementById("formProfissional").onsubmit = async e => {
+    document.getElementById("formPagamento").onsubmit = async e => {
         e.preventDefault();
 
-        await fetch(api + "/profissionais", {
+        await fetch(api, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome: profNome.value })
+            body: JSON.stringify({
+                descricao: pagDescricao.value,
+                tipo: pagTipo.value
+            })
         });
 
-        profNome.value = "";
-        loadProfissionais();
+        pagDescricao.value = "";
+        pagTipo.value = "";
+
+        loadPagamentos();
     };
 
     async function buscarPorId() {
         const id = buscarId.value;
         if (!id) return;
 
-        const res = await fetch(api + "/profissionais/" + id);
+        const res = await fetch(api + "/" + id);
 
         if (!res.ok) {
             resultadoBusca.innerHTML =
-                `<div class="alert alert-danger">Profissional não encontrado.</div>`;
+                `<div class="alert alert-danger">Pagamento não encontrado.</div>`;
             return;
         }
 
@@ -220,39 +255,45 @@
         resultadoBusca.innerHTML = `
             <div class="alert alert-success">
                 <strong>ID:</strong> ${p.id}<br>
-                <strong>Nome:</strong> ${p.nome}<br>
+                <strong>Descrição:</strong> ${p.descricao}<br>
+                <strong>Tipo:</strong> ${p.tipo}<br>
                 <strong>Status:</strong> ${p.status}<br>
-                <strong>Registro:</strong> ${formatarData(p.dataRegistro)}<br>
+                <strong>Cadastro:</strong> ${formatarData(p.dataCadastro)}<br>
                 <strong>Atualização:</strong> ${formatarData(p.dataAtualizacao)}
             </div>
         `;
     }
 
-    function abrirModalEdicao(id, nome) {
+    function abrirModalEdicao(id, descricao, tipo) {
         editId.value = id;
-        editNome.value = nome;
+        editDescricao.value = descricao;
+        editTipo.value = tipo;
 
-        const modal = new bootstrap.Modal(modalEdicao);
-        modal.show();
+        new bootstrap.Modal(document.getElementById("modalEdicao")).show();
     }
 
     async function salvarEdicao() {
-        await fetch(api + "/profissionais/" + editId.value, {
+        const id = editId.value;
+
+        await fetch(api + "/" + id, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome: editNome.value })
+            body: JSON.stringify({
+                descricao: editDescricao.value,
+                tipo: editTipo.value
+            })
         });
 
         bootstrap.Modal.getInstance(modalEdicao).hide();
-        loadProfissionais();
+        loadPagamentos();
     }
 
-    async function excluirProfissional(id) {
-        if (!confirm("Deseja excluir este profissional?")) return;
+    async function excluirPagamento(id) {
+        if (!confirm("Deseja realmente excluir este pagamento?")) return;
 
-        await fetch(api + "/profissionais/" + id, { method: "DELETE" });
+        await fetch(api + "/" + id, { method: "DELETE" });
 
-        loadProfissionais();
+        loadPagamentos();
     }
 
     function formatarData(d) {
@@ -264,7 +305,7 @@
         });
     }
 
-    loadProfissionais();
+    loadPagamentos();
 </script>
 
 </body>
