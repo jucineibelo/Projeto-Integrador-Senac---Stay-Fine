@@ -1,0 +1,85 @@
+body {
+            background: linear-gradient(135deg, #000 0%, #2b2b2b 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .card-dark {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .btn-gold {
+            color: #c9a86a !important;
+            border-color: #c9a86a !important;
+        }
+
+        .btn-gold:hover {
+            background: #c9a86a !important;
+            color: #000 !important;
+        }
+
+        table {
+            color: #fff;
+        }
+
+        table tbody tr {
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        table tbody tr:hover {
+            background: #1a1a1a;
+        }
+
+        .icon-action {
+            font-size: 20px;
+            cursor: pointer;
+            color: #c9a86a;
+            margin-right: 10px;
+            transition: .2s;
+        }
+
+        .icon-action:hover {
+            color: #e6c68b;
+        }
+
+        /* Inputs */
+        input, select, textarea, .form-control {
+            background: #1a1a1a !important;
+            color: white !important;
+            border: 1px solid #333 !important;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #c9a86a !important;
+            box-shadow: 0 0 5px rgba(201,168,106,0.5) !important;
+        }
+
+        /* Placeholder visível */
+        ::placeholder {
+            color: #c9c9c9 !important;
+            opacity: 1 !important;
+        }
+
+        .modal-content {
+            background: #111;
+            color: #fff;
+            border: 1px solid #333;
+        }
+
+        .btn-close-white {
+            filter: invert(1);
+        }
+
+        a.btn-back {
+            color: #c9a86a;
+            text-decoration: none;
+        }
+
+        a.btn-back:hover {
+            color: #e6c68b;
+        }
