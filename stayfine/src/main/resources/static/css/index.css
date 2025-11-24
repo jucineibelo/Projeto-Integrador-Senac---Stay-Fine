@@ -1,0 +1,41 @@
+
+        body {
+            background: linear-gradient(135deg, #000000 0%, #2b2b2b 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .title {
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .menu-card {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 30px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            background: #181818;
+            border-color: #c9a86a; /* dourado elegante */
+        }
+
+        .menu-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #c9a86a;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        a:hover {
+            color: #c9a86a;
+        }
