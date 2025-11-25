@@ -1,0 +1,74 @@
+body {
+            background: linear-gradient(135deg, #000 0%, #2b2b2b 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .card-dark {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .btn-gold {
+            color: #c9a86a;
+            border-color: #c9a86a;
+        }
+
+        .btn-gold:hover {
+            background: #c9a86a;
+            color: #000;
+        }
+
+        table {
+            color: #fff;
+        }
+
+        table tbody tr {
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        table tbody tr:hover {
+            background: #1a1a1a;
+        }
+
+        .icon-action {
+            font-size: 20px;
+            cursor: pointer;
+            color: #c9a86a;
+            margin-right: 10px;
+            transition: 0.2s;
+        }
+
+        .icon-action:hover {
+            color: #e6c68b;
+        }
+
+        input, .form-control {
+            background: #111 !important;
+            color: white !important;
+            border: 1px solid #333 !important;
+            border-radius: 8px !important;
+        }
+
+        .modal-content {
+            background: #111;
+            color: #fff;
+            border: 1px solid #333;
+        }
+
+        a.btn-back {
+            color: #c9a86a;
+            text-decoration: none;
+        }
+
+        a.btn-back:hover {
+            color: #e6c68b;
+        }
+
+        /* Placeholder visível */
+        ::placeholder {
+            color: #c9c9c9 !important;
+            opacity: 1;
+        }
