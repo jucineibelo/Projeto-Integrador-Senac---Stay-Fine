@@ -24,17 +24,17 @@ public class AgendamentoDBEntity {
     private String status;
 
     // Um cliente pode ter vários agendamentos
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "cliente_id")
     private ClienteDBEntity cliente;
 
     // Um profissional pode ter vários agendamentos, mas um agendamento só tem 1 profissional
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "profissional_id")
     private ProfissionalDBEntity profissional;
 
     // Relacionamento 1:1 - um agendamento tem 1 pagamento
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "pagamento_id", unique = false)
     private PagamentoDBEntity pagamento;
 

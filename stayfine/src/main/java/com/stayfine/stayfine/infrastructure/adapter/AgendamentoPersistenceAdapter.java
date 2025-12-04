@@ -1,7 +1,6 @@
 package com.stayfine.stayfine.infrastructure.adapter;
 
 import com.stayfine.stayfine.core.domain.model.Agendamento;
-import com.stayfine.stayfine.core.domain.model.Produto;
 import com.stayfine.stayfine.core.gateway.AgendamentoGateway;
 import com.stayfine.stayfine.infrastructure.database.entity.AgendamentoDBEntity;
 import com.stayfine.stayfine.infrastructure.database.repository.*;
