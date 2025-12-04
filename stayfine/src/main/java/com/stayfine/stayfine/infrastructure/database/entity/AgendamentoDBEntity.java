@@ -1,6 +1,8 @@
 package com.stayfine.stayfine.infrastructure.database.entity;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class AgendamentoDBEntity {
 
     // Relacionamento 1:1 - um agendamento tem 1 pagamento
     @OneToOne
-    @JoinColumn(name = "pagamento_id")
+    @JoinColumn(name = "pagamento_id", unique = false)
     private PagamentoDBEntity pagamento;
 
     // Agendamento pode ter vários produtos, e produtos podem aparecer em vários agendamentos
@@ -46,7 +48,7 @@ public class AgendamentoDBEntity {
     private List<ProdutoDBEntity> produtos;
 
     @Column(name = "data_agendamento")
-    private OffsetDateTime dataAgendamento;
+    private LocalDateTime dataAgendamento;
 
     public AgendamentoDBEntity() {
 
@@ -54,7 +56,7 @@ public class AgendamentoDBEntity {
 
     public AgendamentoDBEntity(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String status,
                                ClienteDBEntity cliente, ProfissionalDBEntity profissional, PagamentoDBEntity pagamento,
-                               List<ProdutoDBEntity> produtos, OffsetDateTime dataAgendamento) {
+                               List<ProdutoDBEntity> produtos, LocalDateTime dataAgendamento) {
         this.id = id;
         this.dataCadastro = dataCadastro;
         this.dataAtualizacao = dataAtualizacao;
@@ -130,11 +132,11 @@ public class AgendamentoDBEntity {
         this.produtos = produtos;
     }
 
-    public OffsetDateTime getDataAgendamento() {
+    public LocalDateTime getDataAgendamento() {
         return dataAgendamento;
     }
 
-    public void setDataAgendamento(OffsetDateTime dataAgendamento) {
+    public void setDataAgendamento(LocalDateTime dataAgendamento) {
         this.dataAgendamento = dataAgendamento;
     }
 }

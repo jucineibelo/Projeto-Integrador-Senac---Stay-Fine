@@ -1,5 +1,6 @@
 package com.stayfine.stayfine.core.domain.model;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -12,12 +13,15 @@ public class Agendamento {
     private Pagamento pagamento;
     private Profissional profissional;
     private List<Produto> produtos;
-    private OffsetDateTime dataAgendamento;
+    private LocalDateTime dataAgendamento;
 
+
+    public Agendamento() {
+    }
 
     public Agendamento(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String status,
                        Cliente cliente, Pagamento pagamento, Profissional profissional, List<Produto> produtos,
-                       OffsetDateTime dataAgendamento) {
+                       LocalDateTime dataAgendamento) {
         this.id = id;
         this.dataCadastro = dataCadastro;
         this.dataAtualizacao = dataAtualizacao;
@@ -30,7 +34,7 @@ public class Agendamento {
     }
 
     public Agendamento(Cliente cliente, Pagamento pagamento, Profissional profissional, List<Produto> produtos,
-                       OffsetDateTime offsetDateTime) {
+                       LocalDateTime offsetDateTime) {
 
         this.cliente = cliente;
         this.pagamento = pagamento;
@@ -39,7 +43,7 @@ public class Agendamento {
         this.dataAgendamento = offsetDateTime;
     }
 
-    public Agendamento(Pagamento pagamento, Profissional profissional, OffsetDateTime offsetDateTime) {
+    public Agendamento(Pagamento pagamento, Profissional profissional, LocalDateTime offsetDateTime) {
         this.pagamento = pagamento;
         this.profissional = profissional;
         this.dataAgendamento = offsetDateTime;
@@ -109,11 +113,11 @@ public class Agendamento {
         this.produtos = produtos;
     }
 
-    public OffsetDateTime getDataAgendamento() {
+    public LocalDateTime getDataAgendamento() {
         return dataAgendamento;
     }
 
-    public void setDataAgendamento(OffsetDateTime dataAgendamento) {
+    public void setDataAgendamento(LocalDateTime dataAgendamento) {
         this.dataAgendamento = dataAgendamento;
     }
 }

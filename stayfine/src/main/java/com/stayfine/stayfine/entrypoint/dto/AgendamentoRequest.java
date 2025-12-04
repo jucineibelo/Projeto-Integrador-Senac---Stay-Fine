@@ -1,5 +1,6 @@
 package com.stayfine.stayfine.entrypoint.dto;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -8,6 +9,6 @@ public record AgendamentoRequest(
         Long pagamentoId,
         Long profissionalId,
         List<Long> produtosIds,
-        OffsetDateTime dataAgendamento
+        LocalDateTime dataAgendamento
 ) {
 }
