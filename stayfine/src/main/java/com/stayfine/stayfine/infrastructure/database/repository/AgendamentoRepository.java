@@ -20,4 +20,6 @@ public interface AgendamentoRepository extends JpaRepository<AgendamentoDBEntity
     boolean existeConflito(Long profissionalId, LocalDateTime horario);
 
     boolean existsByIdAndStatus(Long id, String status);
+
+    boolean existsByDataAgendamento(LocalDateTime dataAgendamento);
 }

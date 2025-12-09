@@ -6,6 +6,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
     <link rel="stylesheet" href="css/agendamentos.css">
 
     <!-- FLATPICKR -->
@@ -46,18 +47,6 @@
         </form>
     </div>
 
-    <!-- BUSCAR POR ID -->
-    <div class="card-dark mb-4">
-        <h5>Buscar Agendamento por ID</h5>
-        <div class="d-flex">
-            <input id="buscarAgendamentoId" type="number" class="form-control me-2" placeholder="ID">
-            <button class="btn btn-gold" onclick="buscarAgendamentoPorId()">
-                <i class="bi bi-search"></i> Buscar
-            </button>
-        </div>
-        <div id="resultadoAgendamento" class="mt-3"></div>
-    </div>
-
     <h3 class="mt-4">Agendamentos Cadastrados</h3>
 
     <!-- TABELA -->
@@ -71,7 +60,6 @@
             <th>Produtos</th>
             <th>Data Agendada</th>
             <th>Cadastro</th>
-            <th>Atualização</th>
             <th>Ações</th>
         </tr>
         </thead>
@@ -92,8 +80,8 @@
             <div class="modal-body">
                 <input type="hidden" id="editAgId">
 
-                <label>Cliente:</label>
-                <select id="editAgCli" class="form-control mb-2" required></select>
+                <label>Cliente (não editável):</label>
+                <select id="editAgCli" class="form-control mb-2" disabled></select>
 
                 <label>Pagamento:</label>
                 <select id="editAgPag" class="form-control mb-2" required></select>
@@ -101,8 +89,8 @@
                 <label>Profissional:</label>
                 <select id="editAgProf" class="form-control mb-2" required></select>
 
-                <label>Produtos:</label>
-                <select id="editAgProdutos" class="form-control mb-2" multiple required></select>
+                <label>Produtos (não editável):</label>
+                <select id="editAgProdutos" class="form-control mb-2" multiple disabled></select>
 
                 <label>Data Agendada:</label>
                 <input id="editAgData" type="text" class="form-control mb-2" required>
@@ -121,222 +109,199 @@
 <script>
     const api = "http://localhost:8080";
 
-/* ===========================================================
-   CARREGAR SELECTS
-=========================================================== */
-async function carregarSelects() {
-    const [clientes, profs, pagamentos, produtos] = await Promise.all([
-        fetch(api + "/clientes").then(r => r.json()),
-        fetch(api + "/profissionais").then(r => r.json()),
-        fetch(api + "/pagamentos").then(r => r.json()),
-        fetch(api + "/produtos").then(r => r.json())
-    ]);
+    /* ===========================================================
+       CARREGAR SELECTS
+    =========================================================== */
+    async function carregarSelects() {
+        const [clientes, profs, pagamentos, produtos] = await Promise.all([
+            fetch(api + "/clientes").then(r => r.json()),
+            fetch(api + "/profissionais").then(r => r.json()),
+            fetch(api + "/pagamentos").then(r => r.json()),
+            fetch(api + "/produtos").then(r => r.json())
+        ]);
 
-    agCli.innerHTML = clientes.map(c => `<option value="${c.id}">${c.nome}</option>`).join("");
-    editAgCli.innerHTML = agCli.innerHTML;
+        agCli.innerHTML  = clientes.map(c => `<option value="${c.id}">${c.nome}</option>`).join("");
+        agProf.innerHTML = profs.map(p => `<option value="${p.id}">${p.nome}</option>`).join("");
 
-    agProf.innerHTML = profs.map(p => `<option value="${p.id}">${p.nome}</option>`).join("");
-    editAgProf.innerHTML = agProf.innerHTML;
+        agPag.innerHTML  = pagamentos.map(p => {
+            const name = p.metodo || p.metodoPagamento || p.descricao || "Pagamento";
+            return `<option value="${p.id}">${name}</option>`;
+        }).join("");
 
-    agPag.innerHTML = pagamentos.map(p => {
-        const metodo = p.metodo || p.metodoPagamento || p.descricao || "Método não informado";
-        return `<option value="${p.id}">${metodo}</option>`;
-    }).join("");
-    editAgPag.innerHTML = agPag.innerHTML;
+        agProdutos.innerHTML = produtos
+            .map(p => `<option value="${p.id}">${p.descricao}</option>`)
+            .join("");
 
-    agProdutos.innerHTML = produtos.map(p =>
-        `<option value="${p.id}">${p.descricao} - R$ ${p.preco.toFixed(2)}</option>`
-    ).join("");
-    editAgProdutos.innerHTML = agProdutos.innerHTML;
-}
-
-/* ===========================================================
-   LISTAR AGENDAMENTOS
-=========================================================== */
-async function loadAgendamentos() {
-    const res = await fetch(api + "/agendamentos");
-    const data = await res.json();
-
-    agendamentosTable.innerHTML = data.map(a => `
-        <tr>
-            <td>${a.id}</td>
-            <td>${a.cliente}</td>
-            <td>${a.profissional}</td>
-            <td>${a.pagamento}</td>
-            <td>${(a.produtos || []).join(", ")}</td>
-            <td>${formatarData(a.dataAgendamento)}</td>
-            <td>${formatarData(a.dataCadastro)}</td>
-            <td>${formatarData(a.dataAtualizacao)}</td>
-            <td>
-                <i class="bi bi-pencil-square icon-action"
-                   onclick="abrirModalAgendamento(${a.id}, ${a.clienteId}, ${a.pagamentoId}, ${a.profissionalId}, [${a.produtosIds}], '${a.dataAgendamento}')"></i>
-                <i class="bi bi-trash3 icon-action" onclick="excluirAgendamento(${a.id})"></i>
-            </td>
-        </tr>
-    `).join("");
-}
-
-/* ===========================================================
-   FORMATADOR DE DATA PT-BR
-=========================================================== */
-function formatarData(d) {
-    if (!d) return "-";
-    try {
-        const dt = new Date(d);
-        return dt.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
-    } catch {
-        return d;
+        // Para edição
+        editAgPag.innerHTML = agPag.innerHTML;
+        editAgProf.innerHTML = agProf.innerHTML;
     }
-}
 
-/* ===========================================================
-   CADASTRAR AGENDAMENTO
-=========================================================== */
-formAgendamento.onsubmit = async e => {
-    e.preventDefault();
+    /* ===========================================================
+       LISTAR AGENDAMENTOS
+    =========================================================== */
+    async function loadAgendamentos() {
+        const data = await fetch(api + "/agendamentos").then(r => r.json());
 
-    const produtosSelecionados = Array.from(agProdutos.selectedOptions).map(opt => Number(opt.value));
+        agendamentosTable.innerHTML = data.map(a => `
+            <tr>
+                <td>${a.id}</td>
+                <td>${a.cliente}</td>
+                <td>${a.profissional}</td>
+                <td>${a.pagamento}</td>
+                <td>${(a.produtos || []).join(", ")}</td>
+                <td>${formatarData(a.dataAgendamento)}</td>
+                <td>${formatarData(a.dataCadastro)}</td>
+                <td>
+                    <i class="bi bi-pencil-square edit-btn icon-action"
+                        data-agendamento='${JSON.stringify(a)}'></i>
+                    <i class="bi bi-trash3 icon-action" onclick="excluirAgendamento(${a.id})"></i>
+                </td>
+            </tr>
+        `).join("");
+    }
 
-    // Data vinda do Flatpickr
-    const dataJS = agData._flatpickr.selectedDates[0];
+    /* ===========================================================
+       FORMATAR DATA
+    =========================================================== */
+    function formatarData(d) {
+        if (!d) return "-";
+        return new Date(d).toLocaleString("pt-BR", {
+            dateStyle: "short",
+            timeStyle: "short"
+        });
+    }
 
-    // Formato esperado pelo backend: yyyy-MM-ddTHH:mm
-    const dataFormatada =
-        dataJS.getFullYear() +
-        "-" + String(dataJS.getMonth() + 1).padStart(2, "0") +
-        "-" + String(dataJS.getDate()).padStart(2, "0") +
-        "T" + String(dataJS.getHours()).padStart(2, "0") +
-        ":" + String(dataJS.getMinutes()).padStart(2, "0");
+    /* ===========================================================
+       ENVIO DO FORMULÁRIO (CRIAR AGENDAMENTO)
+    =========================================================== */
+    document.getElementById("formAgendamento").addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    await fetch(api + "/agendamentos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        const selectedProducts = Array.from(agProdutos.selectedOptions).map(opt => Number(opt.value));
+
+        const dataJS = agData._flatpickr.selectedDates[0];
+
+        const dataFormatada =
+            dataJS.getFullYear() + "-" +
+            String(dataJS.getMonth() + 1).padStart(2, "0") + "-" +
+            String(dataJS.getDate()).padStart(2, "0") + "T" +
+            String(dataJS.getHours()).padStart(2, "0") + ":" +
+            String(dataJS.getMinutes()).padStart(2, "0");
+
+        const payload = {
             clienteId: Number(agCli.value),
             pagamentoId: Number(agPag.value),
             profissionalId: Number(agProf.value),
-            produtosIds: produtosSelecionados,
+            produtosIds: selectedProducts,
             dataAgendamento: dataFormatada
-        })
+        };
+
+        const resp = await fetch(api + "/agendamentos", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload)
+        });
+
+        if (resp.ok) {
+            alert("Agendamento criado com sucesso!");
+            e.target.reset();
+            agData._flatpickr.clear();
+            loadAgendamentos();
+        } else {
+            const err = await resp.text();
+            alert("Erro ao criar agendamento: " + err);
+        }
     });
 
-    formAgendamento.reset();
-    loadAgendamentos();
-};
+    /* ===========================================================
+       EVENTO DOS BOTÕES DE EDIÇÃO
+    =========================================================== */
+    document.addEventListener("click", e => {
+        if (e.target.classList.contains("edit-btn")) {
+            abrirModalAgendamento(JSON.parse(e.target.dataset.agendamento));
+        }
+    });
 
-/* ===========================================================
-   BUSCAR POR ID
-=========================================================== */
-async function buscarAgendamentoPorId() {
-    const id = buscarAgendamentoId.value;
-    if (!id) return;
+    /* ===========================================================
+       ABRIR MODAL
+    =========================================================== */
+    function abrirModalAgendamento(a) {
+        editAgId.value = a.id;
 
-    const res = await fetch(api + "/agendamentos/" + id);
-    if (!res.ok) {
-        resultadoAgendamento.innerHTML = `<div class="alert alert-danger">Agendamento não encontrado.</div>`;
-        return;
+        editAgCli.innerHTML = `<option selected>${a.cliente}</option>`;
+        editAgProdutos.innerHTML = (a.produtos || []).map(p => `<option selected>${p}</option>`).join("");
+
+        editAgPag.value = a.pagamentoId || "";
+        editAgProf.value = a.profissionalId || "";
+
+        editAgData._flatpickr.setDate(a.dataAgendamento.substring(0, 16));
+
+        new bootstrap.Modal(modalAgendamento).show();
     }
 
-    const a = await res.json();
-    resultadoAgendamento.innerHTML = `
-        <div class="alert alert-success">
-            <strong>ID:</strong> ${a.id}<br>
-            <strong>Cliente:</strong> ${a.cliente}<br>
-            <strong>Profissional:</strong> ${a.profissional}<br>
-            <strong>Pagamento:</strong> ${a.pagamento}<br>
-            <strong>Produtos:</strong> ${(a.produtos || []).join(", ")}<br>
-            <strong>Data Agendada:</strong> ${formatarData(a.dataAgendamento)}<br>
-            <strong>Cadastro:</strong> ${formatarData(a.dataCadastro)}<br>
-            <strong>Atualização:</strong> ${formatarData(a.dataAtualizacao)}
-        </div>
-    `;
-}
+    /* ===========================================================
+       SALVAR EDIÇÃO
+    =========================================================== */
+    async function salvarEdicaoAgendamento() {
+        const dataJS = editAgData._flatpickr.selectedDates[0];
 
-/* ===========================================================
-   ABRIR MODAL DE EDIÇÃO
-=========================================================== */
-function abrirModalAgendamento(id, cliId, pagId, profId, produtosIds, data) {
-    editAgId.value = id;
-    editAgCli.value = cliId;
-    editAgPag.value = pagId;
-    editAgProf.value = profId;
+        const dataFormatada =
+            dataJS.getFullYear() + "-" +
+            String(dataJS.getMonth() + 1).padStart(2, "0") + "-" +
+            String(dataJS.getDate()).padStart(2, "0") + "T" +
+            String(dataJS.getHours()).padStart(2, "0") + ":" +
+            String(dataJS.getMinutes()).padStart(2, "0");
 
-    Array.from(editAgProdutos.options).forEach(opt => {
-        opt.selected = produtosIds.includes(Number(opt.value));
+        await fetch(api + "/agendamentos/" + editAgId.value, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                pagamentoId: Number(editAgPag.value),
+                profissionalId: Number(editAgProf.value),
+                dataAgendamento: dataFormatada
+            })
+        });
+
+        bootstrap.Modal.getInstance(modalAgendamento).hide();
+        loadAgendamentos();
+    }
+
+    /* ===========================================================
+       EXCLUIR
+    =========================================================== */
+    async function excluirAgendamento(id) {
+        if (!confirm("Excluir agendamento?")) return;
+        await fetch(api + "/agendamentos/" + id, { method: "DELETE" });
+        loadAgendamentos();
+    }
+
+    /* ===========================================================
+       INICIALIZAR
+    =========================================================== */
+    carregarSelects().then(() => {
+        loadAgendamentos();
+
+        flatpickr("#agData", {
+            enableTime: true,
+            time_24hr: true,
+            altInput: true,
+            altFormat: "d/m/Y H:i",
+            dateFormat: "Y-m-d\\TH:i",
+            locale: "pt"
+        });
+
+        flatpickr("#editAgData", {
+            enableTime: true,
+            time_24hr: true,
+            altInput: true,
+            altFormat: "d/m/Y H:i",
+            dateFormat: "Y-m-d\\TH:i",
+            locale: "pt"
+        });
     });
-
-    // Agora a data vem como LocalDateTime (SEM Z)
-    editAgData._flatpickr.setDate(data);
-
-    new bootstrap.Modal(modalAgendamento).show();
-}
-
-/* ===========================================================
-   SALVAR EDIÇÃO
-=========================================================== */
-async function salvarEdicaoAgendamento() {
-    const produtosSelecionados = Array.from(editAgProdutos.selectedOptions).map(opt => Number(opt.value));
-
-    const dataJS = editAgData._flatpickr.selectedDates[0];
-
-    // yyyy-MM-ddTHH:mm
-    const dataFormatada =
-        dataJS.getFullYear() +
-        "-" + String(dataJS.getMonth() + 1).padStart(2, "0") +
-        "-" + String(dataJS.getDate()).padStart(2, "0") +
-        "T" + String(dataJS.getHours()).padStart(2, "0") +
-        ":" + String(dataJS.getMinutes()).padStart(2, "0");
-
-    await fetch(api + "/agendamentos/" + editAgId.value, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            pagamentoId: Number(editAgPag.value),
-            profissionalId: Number(editAgProf.value),
-            produtosIds: produtosSelecionados,
-            dataAgendamento: dataFormatada
-        })
-    });
-
-    bootstrap.Modal.getInstance(modalAgendamento).hide();
-    loadAgendamentos();
-}
-
-/* ===========================================================
-   EXCLUIR AGENDAMENTO
-=========================================================== */
-async function excluirAgendamento(id) {
-    if (!confirm("Deseja excluir este agendamento?")) return;
-
-    await fetch(api + "/agendamentos/" + id, { method: "DELETE" });
-    loadAgendamentos();
-}
-
-/* ===========================================================
-   INICIALIZAÇÃO + FLATPICKR
-=========================================================== */
-carregarSelects().then(() => {
-    loadAgendamentos();
-
-    flatpickr("#agData", {
-        enableTime: true,
-        time_24hr: true,
-        altInput: true,
-        altFormat: "d/m/Y H:i",
-        dateFormat: "Y-m-d\TH:i",
-        locale: "pt"
-    });
-
-    flatpickr("#editAgData", {
-        enableTime: true,
-        time_24hr: true,
-        altInput: true,
-        altFormat: "d/m/Y H:i",
-        dateFormat: "Y-m-d\TH:i",
-        locale: "pt"
-    });
-});
 </script>
+
 
 </body>
 </html>

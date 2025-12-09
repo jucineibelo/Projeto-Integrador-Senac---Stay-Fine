@@ -28,8 +28,10 @@ public class AgendamentoPersistenceAdapter implements AgendamentoGateway {
     public Agendamento inserirAgendamento(Agendamento agendamento) {
         AgendamentoDBEntity agendamentoDB = toDbEntity(agendamento);
 
-        if (repository.existeConflito(agendamentoDB.getProfissional().getId(),
-                agendamentoDB.getDataAgendamento())) {
+        if (!repository.existsByDataAgendamento(agendamento.getDataAgendamento()) &&
+                repository.existeConflito(agendamentoDB.getProfissional().getId(),
+                        agendamentoDB.getDataAgendamento())) {
+
             throw new IllegalArgumentException("Conflito de agendamento para o profissional no horário informado.");
         }
 
