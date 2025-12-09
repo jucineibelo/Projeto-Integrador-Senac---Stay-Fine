@@ -7,6 +7,7 @@ import com.stayfine.stayfine.infrastructure.database.repository.*;
 import com.stayfine.stayfine.infrastructure.mapper.AgendamentoMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,10 +29,7 @@ public class AgendamentoPersistenceAdapter implements AgendamentoGateway {
     public Agendamento inserirAgendamento(Agendamento agendamento) {
         AgendamentoDBEntity agendamentoDB = toDbEntity(agendamento);
 
-        if (!repository.existsByDataAgendamento(agendamento.getDataAgendamento()) &&
-                repository.existeConflito(agendamentoDB.getProfissional().getId(),
-                        agendamentoDB.getDataAgendamento())) {
-
+        if (repository.existeConflito(agendamentoDB.getProfissional().getId(), agendamentoDB.getDataAgendamento())) {
             throw new IllegalArgumentException("Conflito de agendamento para o profissional no horário informado.");
         }
 
@@ -63,11 +61,13 @@ public class AgendamentoPersistenceAdapter implements AgendamentoGateway {
     }
 
     @Override
+    @Transactional
     public Agendamento atualizarAgendamento(Agendamento agendamento) {
         AgendamentoDBEntity agendamentoDB = toDbEntity(agendamento);
+        agendamentoDB.setId(agendamento.getId());
 
-        if (repository.existeConflito(agendamentoDB.getProfissional().getId(),
-                agendamentoDB.getDataAgendamento())) {
+        if (!repository.existsByDataAgendamento(agendamento.getDataAgendamento()) &&
+                repository.existeConflito(agendamentoDB.getProfissional().getId(), agendamentoDB.getDataAgendamento())) {
             throw new IllegalArgumentException("Conflito de agendamento para o profissional no horário informado.");
         }
 

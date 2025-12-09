@@ -6,6 +6,7 @@ import com.stayfine.stayfine.core.domain.model.Produto;
 import com.stayfine.stayfine.core.exceptions.DomainException;
 import com.stayfine.stayfine.core.gateway.*;
 import com.stayfine.stayfine.core.usecase.AgendamentoUseCase;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.List;
