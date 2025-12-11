@@ -7,6 +7,8 @@ public record ClienteResponse(
         String nome,
         String email,
         String telefone,
+        String username,
+        String password,
         OffsetDateTime dataCadastro,
         OffsetDateTime dataAtualizacao,
         String status
