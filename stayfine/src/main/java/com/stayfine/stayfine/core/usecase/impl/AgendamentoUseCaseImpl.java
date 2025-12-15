@@ -8,6 +8,7 @@ import com.stayfine.stayfine.core.gateway.*;
 import com.stayfine.stayfine.core.usecase.AgendamentoUseCase;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -54,9 +55,10 @@ public class AgendamentoUseCaseImpl implements AgendamentoUseCase {
                 .map(p -> produtoGateway.buscarProduto(p.getId()))
                 .toList();
 
+        agendamento.setValorTotal(produtos.stream().mapToDouble(Produto::getPreco).sum());
         agendamento.setProdutos(produtos);
         agendamento.setDataCadastro(OffsetDateTime.now());
-        agendamento.setStatus(DomainStatus.ATIVO.name());
+        agendamento.setStatus(DomainStatus.AGENDADO.name());
 
         return gateway.inserirAgendamento(agendamento);
     }
@@ -115,5 +117,12 @@ public class AgendamentoUseCaseImpl implements AgendamentoUseCase {
         agendamento.setStatus(DomainStatus.INATIVO.name());
         agendamento.setDataAtualizacao(OffsetDateTime.now());
         gateway.excluirAgendamento(agendamento);
+    }
+
+    @Override
+    public Agendamento atualizarStatusParaConcluido(Long id) {
+        Agendamento agendamento = buscarAgendamento(id);
+        agendamento.setStatus(DomainStatus.CONCLUIDO.name());
+        return gateway.atualizarStatusParaConcluido(agendamento);
     }
 }

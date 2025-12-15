@@ -14,6 +14,7 @@ public class Agendamento {
     private Profissional profissional;
     private List<Produto> produtos;
     private LocalDateTime dataAgendamento;
+    private Double valorTotal;
 
 
     public Agendamento() {
@@ -21,7 +22,7 @@ public class Agendamento {
 
     public Agendamento(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String status,
                        Cliente cliente, Pagamento pagamento, Profissional profissional, List<Produto> produtos,
-                       LocalDateTime dataAgendamento) {
+                       LocalDateTime dataAgendamento, Double valorTotal) {
         this.id = id;
         this.dataCadastro = dataCadastro;
         this.dataAtualizacao = dataAtualizacao;
@@ -31,6 +32,7 @@ public class Agendamento {
         this.profissional = profissional;
         this.produtos = produtos;
         this.dataAgendamento = dataAgendamento;
+        this.valorTotal = valorTotal;
     }
 
     public Agendamento(Cliente cliente, Pagamento pagamento, Profissional profissional, List<Produto> produtos,
@@ -119,5 +121,12 @@ public class Agendamento {
 
     public void setDataAgendamento(LocalDateTime dataAgendamento) {
         this.dataAgendamento = dataAgendamento;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 }

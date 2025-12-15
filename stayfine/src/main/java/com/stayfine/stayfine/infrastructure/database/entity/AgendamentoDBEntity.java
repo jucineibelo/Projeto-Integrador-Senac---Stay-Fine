@@ -34,7 +34,7 @@ public class AgendamentoDBEntity {
     private ProfissionalDBEntity profissional;
 
     // Relacionamento 1:1 - um agendamento tem 1 pagamento
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "pagamento_id", unique = false)
     private PagamentoDBEntity pagamento;
 
@@ -50,13 +50,16 @@ public class AgendamentoDBEntity {
     @Column(name = "data_agendamento")
     private LocalDateTime dataAgendamento;
 
+    @Column(name = "valor_total")
+    private Double valorTotal;
+
     public AgendamentoDBEntity() {
 
     }
 
     public AgendamentoDBEntity(Long id, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, String status,
                                ClienteDBEntity cliente, ProfissionalDBEntity profissional, PagamentoDBEntity pagamento,
-                               List<ProdutoDBEntity> produtos, LocalDateTime dataAgendamento) {
+                               List<ProdutoDBEntity> produtos, LocalDateTime dataAgendamento, Double valorTotal) {
         this.id = id;
         this.dataCadastro = dataCadastro;
         this.dataAtualizacao = dataAtualizacao;
@@ -66,6 +69,7 @@ public class AgendamentoDBEntity {
         this.pagamento = pagamento;
         this.produtos = produtos;
         this.dataAgendamento = dataAgendamento;
+        this.valorTotal = valorTotal;
     }
 
     public Long getId() {
@@ -138,5 +142,13 @@ public class AgendamentoDBEntity {
 
     public void setDataAgendamento(LocalDateTime dataAgendamento) {
         this.dataAgendamento = dataAgendamento;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 }

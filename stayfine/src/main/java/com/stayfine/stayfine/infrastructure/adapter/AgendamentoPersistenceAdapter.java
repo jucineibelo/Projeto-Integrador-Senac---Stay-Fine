@@ -8,16 +8,14 @@ import com.stayfine.stayfine.infrastructure.mapper.AgendamentoMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-
 import static com.stayfine.stayfine.infrastructure.mapper.AgendamentoMapper.toDbEntity;
 import static com.stayfine.stayfine.infrastructure.mapper.AgendamentoMapper.toDomain;
 
 @Service
 public class AgendamentoPersistenceAdapter implements AgendamentoGateway {
 
-    private final String STATUS_ATIVO = "ATIVO";
+    private final String STATUS_AGENDADO = "AGENDADO";
     private final AgendamentoRepository repository;
 
     public AgendamentoPersistenceAdapter(AgendamentoRepository repository) {
@@ -36,11 +34,10 @@ public class AgendamentoPersistenceAdapter implements AgendamentoGateway {
         return toDomain(repository.save(agendamentoDB));
     }
 
-
     @Override
     public Agendamento buscarAgendamentoAtivo(Long id) {
 
-        if (!repository.existsByIdAndStatus(id, STATUS_ATIVO)) {
+        if (!repository.existsByIdAndStatus(id, STATUS_AGENDADO)) {
             throw new EntityNotFoundException("Agendamento " + id + " não encontrado ou inativo na base de dados");
         }
 
@@ -79,4 +76,11 @@ public class AgendamentoPersistenceAdapter implements AgendamentoGateway {
         repository.save(toDbEntity(agendamento));
     }
 
+    @Override
+    @Transactional
+    public Agendamento atualizarStatusParaConcluido(Agendamento agendamento) {
+        AgendamentoDBEntity agendamentoDB = toDbEntity(agendamento);
+        agendamentoDB.setId(agendamento.getId());
+        return toDomain(repository.save(agendamentoDB));
+    }
 }

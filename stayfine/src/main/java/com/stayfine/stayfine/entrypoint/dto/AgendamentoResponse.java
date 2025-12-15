@@ -7,11 +7,13 @@ import java.util.List;
 public record AgendamentoResponse(
         Long id,
         OffsetDateTime dataCadastro,
+        String status,
         String cliente,
         String pagamento,
         String profissional,
         List<String> produtos,
-        LocalDateTime dataAgendamento
+        LocalDateTime dataAgendamento,
+        Double valorTotal
 
 ) {
 }

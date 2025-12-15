@@ -51,7 +51,6 @@ public class ProdutoPersistenceAdapter implements ProdutoGateway {
                 .toList();
     }
 
-
     @Override
     @Transactional
     public Produto atualizarProduto(Produto produto) {

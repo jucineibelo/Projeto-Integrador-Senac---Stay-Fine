@@ -11,6 +11,7 @@ public class AgendamentoDtoMapper {
         return new AgendamentoResponse(
                 agendamento.getId(),
                 agendamento.getDataCadastro(),
+                agendamento.getStatus(),
                 agendamento.getCliente().getNome(),
                 agendamento.getPagamento().getDescricao(),
                 agendamento.getProfissional().getNome(),
@@ -18,7 +19,8 @@ public class AgendamentoDtoMapper {
                         .stream()
                         .map(Produto::getDescricao)
                         .toList(),
-                agendamento.getDataAgendamento()
+                agendamento.getDataAgendamento(),
+                agendamento.getValorTotal()
         );
     }
 

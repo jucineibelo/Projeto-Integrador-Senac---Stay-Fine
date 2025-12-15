@@ -57,4 +57,10 @@ public class AgendamentoController {
         agendamentoUseCase.excluirAgendamento(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/status/{id}")
+    public ResponseEntity<AgendamentoResponse> atualizarStatusAgendamento(@PathVariable Long id) {
+        Agendamento agendamento = agendamentoUseCase.atualizarStatusParaConcluido(id);
+        return ResponseEntity.ok(toResponse(agendamento));
+    }
 }
