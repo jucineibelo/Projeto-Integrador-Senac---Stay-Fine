@@ -22,12 +22,12 @@
 
     <!-- FORMULÁRIO -->
     <div class="card-dark mb-4">
-        <form id="formCliente">
-            <input id="clienteNome" class="form-control mb-2" placeholder="Nome" required>
-            <input id="clienteTelefone" class="form-control mb-2" placeholder="Telefone" required>
+        <form id="formCliente" autocomplete="off">
+            <input id="clienteNome" class="form-control mb-2" autocomplete="off" placeholder="Nome" required>
+            <input id="clienteTelefone" class="form-control mb-2" autocomplete="off" placeholder="Telefone" required>
             <input id="clienteEmail" class="form-control mb-2" placeholder="Email" required>
-            <input id="clienteUsername" class="form-control mb-2" placeholder="Username" required>
-            <input id="clientePassword" type="password" class="form-control mb-2" placeholder="Password" required>
+            <input id="clienteUsername" class="form-control mb-2" placeholder="Username" required autocomplete="new-username">
+            <input id="clientePassword" type="password" class="form-control mb-2" placeholder="Password" required autocomplete="new-password">
 
             <button class="btn btn-gold mt-2">Salvar</button>
         </form>
@@ -78,29 +78,31 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body">
-                <input type="hidden" id="editId">
+            <form autocomplete="off">
+                <div class="modal-body">
+                    <input type="hidden" id="editId">
 
-                <label>Nome:</label>
-                <input id="editNome" class="form-control mb-2">
+                    <label>Nome:</label>
+                    <input id="editNome" class="form-control mb-2" autocomplete="off">
 
-                <label>Telefone:</label>
-                <input id="editTelefone" class="form-control mb-2">
+                    <label>Telefone:</label>
+                    <input id="editTelefone" class="form-control mb-2" autocomplete="off">
 
-                <label>Email:</label>
-                <input id="editEmail" class="form-control mb-2">
+                    <label>Email:</label>
+                    <input id="editEmail" class="form-control mb-2" autocomplete="off">
 
-                <label>Username:</label>
-                <input id="editUsername" class="form-control mb-2">
+                    <label>Username:</label>
+                    <input id="editUsername" class="form-control mb-2" autocomplete="new-username">
 
-                <label>Password:</label>
-                <input id="editPassword" class="form-control mb-2">
-            </div>
+                    <label>Password:</label>
+                    <input id="editPassword" class="form-control mb-2" autocomplete="new-password" type="password">
+                </div>
 
-            <div class="modal-footer border-secondary">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button class="btn btn-gold" onclick="salvarEdicao()">Salvar</button>
-            </div>
+                <div class="modal-footer border-secondary">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancelar</button>
+                    <button class="btn btn-gold" onclick="salvarEdicao(); return false;">Salvar</button>
+                </div>
+            </form>
 
         </div>
     </div>
@@ -236,6 +238,16 @@
         const data = new Date(d);
         return data.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
     }
+
+    document.getElementById('modalEdicao').addEventListener('hidden.bs.modal', function () {
+        editId.value = "";
+        editNome.value = "";
+        editTelefone.value = "";
+        editEmail.value = "";
+        editUsername.value = "";
+        editPassword.value = "";
+    });
+
 
     loadClientes();
 </script>

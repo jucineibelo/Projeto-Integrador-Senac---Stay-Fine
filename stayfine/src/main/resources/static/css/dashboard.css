@@ -1,0 +1,240 @@
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .btn-back {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            color: #ffd700;
+            text-decoration: underline;
+        }
+
+        .card-dark {
+            background-color: var(--dark-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-gold {
+            background-color: var(--gold);
+            color: #000;
+            font-weight: 600;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-gold:hover {
+            background-color: #ffd700;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .badge-status {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-pendente {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .badge-concluido {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+
+        .badge-cancelado {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        .badge-agendado {
+            background-color: rgba(0, 123, 255, 0.2);
+            color: #007bff;
+        }
+
+        .icon-action {
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin: 0 5px;
+            transition: all 0.2s;
+        }
+
+        .icon-action:hover {
+            transform: scale(1.2);
+        }
+
+        .bi-pencil-square {
+            color: var(--gold);
+        }
+
+        .bi-trash3 {
+            color: #dc3545;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--dark-card) 0%, #1e2a47 100%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--gold);
+            transition: transform 0.3s;
+            height: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-title {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filtro-card {
+            background-color: var(--dark-card);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filtro-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .flatpickr-input {
+            background-color: #2c3e50 !important;
+            color: white !important;
+            border: 1px solid #495057 !important;
+        }
+
+        .table {
+            background-color: var(--dark-card);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table thead th {
+            background-color: #1e2a47;
+            border-bottom: 2px solid var(--gold);
+            color: var(--gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 1rem;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .form-control, .form-select {
+            background-color: #2c3e50;
+            border: 1px solid #495057;
+            color: white;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #2c3e50;
+            border-color: var(--gold);
+            color: white;
+            box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+        }
+
+        h2, h3 {
+            color: var(--text-light);
+            font-weight: 700;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .btn-filter {
+            background-color: #2c3e50;
+            color: white;
+            border: 1px solid #495057;
+            transition: all 0.3s;
+        }
+
+        .btn-filter:hover {
+            background-color: #34495e;
+            border-color: var(--gold);
+        }
+
+        .btn-reset {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid #495057;
+        }
+
+        .btn-reset:hover {
+            color: white;
+            border-color: var(--text-muted);
+        }
+
+        .modal-content {
+            background-color: var(--dark-card);
+            color: var(--text-light);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-close-white {
+            filter: invert(1) grayscale(100%) brightness(200%);
+        }
+
+        .calendar-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold);
+            pointer-events: none;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }

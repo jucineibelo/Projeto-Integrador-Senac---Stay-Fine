@@ -15,4 +15,6 @@ public interface AgendamentoGateway {
     Agendamento atualizarAgendamento(Agendamento agendamento);
 
     void excluirAgendamento(Agendamento agendamento);
+
+    Agendamento atualizarStatusParaConcluido(Agendamento agendamento);
 }

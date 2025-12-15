@@ -15,4 +15,6 @@ public interface AgendamentoUseCase {
     Agendamento atualizarAgendamento(Long id, Agendamento agendamento);
 
     void excluirAgendamento(Long id);
+
+    Agendamento atualizarStatusParaConcluido(Long id);
 }

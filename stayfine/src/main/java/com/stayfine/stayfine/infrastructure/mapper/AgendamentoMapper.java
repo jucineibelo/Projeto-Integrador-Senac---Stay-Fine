@@ -18,7 +18,8 @@ public class AgendamentoMapper {
                 agendamento.getProdutos().stream()
                         .map(ProdutoMapper::toDbEntity)
                         .toList(),
-                agendamento.getDataAgendamento()
+                agendamento.getDataAgendamento(),
+                agendamento.getValorTotal()
         );
     }
 
@@ -34,7 +35,8 @@ public class AgendamentoMapper {
                 entity.getProdutos().stream()
                         .map(ProdutoMapper::toDomain)
                         .toList(),
-                entity.getDataAgendamento()
+                entity.getDataAgendamento(),
+                entity.getValorTotal()
         );
     }
 }

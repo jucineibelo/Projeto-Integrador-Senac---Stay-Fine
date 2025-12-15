@@ -14,6 +14,34 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+    <style>
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        .status-pendente {
+            background-color: #ffc107;
+            color: #000;
+        }
+        .status-concluido {
+            background-color: #198754;
+            color: #fff;
+        }
+        .btn-status {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+        }
+        .icon-action {
+            cursor: pointer;
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+        .icon-action:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 
 <body>
@@ -27,7 +55,7 @@
 
     <!-- FORMULÁRIO -->
     <div class="card-dark mb-4">
-        <form id="formAgendamento">
+        <form id="formAgendamento" autocomplete="off">
             <label>Cliente:</label>
             <select id="agCli" class="form-control mb-2" required></select>
 
@@ -37,11 +65,11 @@
             <label>Profissional:</label>
             <select id="agProf" class="form-control mb-2" required></select>
 
-            <label>Produtos (múltiplo):</label>
+            <label>Produtos (múltiplo - segure CTRL para selecionar vários):</label>
             <select id="agProdutos" class="form-control mb-2" multiple required></select>
 
             <label>Data Agendada:</label>
-            <input id="agData" type="text" class="form-control mb-2" required>
+            <input id="agData" type="text" class="form-control mb-2" required autocomplete="off">
 
             <button class="btn btn-gold mt-2">Salvar</button>
         </form>
@@ -58,7 +86,9 @@
             <th>Profissional</th>
             <th>Pagamento</th>
             <th>Produtos</th>
+            <th>Valor Total</th>
             <th>Data Agendada</th>
+            <th>Status</th>
             <th>Cadastro</th>
             <th>Ações</th>
         </tr>
@@ -77,29 +107,36 @@
                 <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body">
-                <input type="hidden" id="editAgId">
+            <form autocomplete="off">
+                <div class="modal-body">
+                    <input type="hidden" id="editAgId">
 
-                <label>Cliente (não editável):</label>
-                <select id="editAgCli" class="form-control mb-2" disabled></select>
+                    <label>Cliente (não editável):</label>
+                    <select id="editAgCli" class="form-control mb-2" disabled></select>
 
-                <label>Pagamento:</label>
-                <select id="editAgPag" class="form-control mb-2" required></select>
+                    <label>Pagamento:</label>
+                    <select id="editAgPag" class="form-control mb-2" required></select>
 
-                <label>Profissional:</label>
-                <select id="editAgProf" class="form-control mb-2" required></select>
+                    <label>Profissional:</label>
+                    <select id="editAgProf" class="form-control mb-2" required></select>
 
-                <label>Produtos (não editável):</label>
-                <select id="editAgProdutos" class="form-control mb-2" multiple disabled></select>
+                    <label>Produtos (não editável):</label>
+                    <select id="editAgProdutos" class="form-control mb-2" multiple disabled></select>
 
-                <label>Data Agendada:</label>
-                <input id="editAgData" type="text" class="form-control mb-2" required>
-            </div>
+                    <label>Data Agendada:</label>
+                    <input id="editAgData" type="text" class="form-control mb-2" required autocomplete="off">
 
-            <div class="modal-footer border-secondary">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button class="btn btn-gold" onclick="salvarEdicaoAgendamento()">Salvar</button>
-            </div>
+                    <label>Status:</label>
+                    <div class="form-control mb-2" style="background-color: #2a2a2a; color: #fff;">
+                        <span id="editAgStatus">PENDENTE</span>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-secondary">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancelar</button>
+                    <button class="btn btn-gold" onclick="salvarEdicaoAgendamento(); return false;">Salvar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -108,6 +145,7 @@
 
 <script>
     const api = "http://localhost:8080";
+    let produtosComPrecos = []; // Cache de produtos com preços
 
     /* ===========================================================
        CARREGAR SELECTS
@@ -120,6 +158,9 @@
             fetch(api + "/produtos").then(r => r.json())
         ]);
 
+        // Armazenar produtos com preços para cálculo
+        produtosComPrecos = produtos;
+
         agCli.innerHTML  = clientes.map(c => `<option value="${c.id}">${c.nome}</option>`).join("");
         agProf.innerHTML = profs.map(p => `<option value="${p.id}">${p.nome}</option>`).join("");
 
@@ -128,8 +169,9 @@
             return `<option value="${p.id}">${name}</option>`;
         }).join("");
 
+        // Mostrar preço junto com descrição no select múltiplo
         agProdutos.innerHTML = produtos
-            .map(p => `<option value="${p.id}">${p.descricao}</option>`)
+            .map(p => `<option value="${p.id}">${p.descricao} - R$ ${(p.preco || 0).toFixed(2)}</option>`)
             .join("");
 
         // Para edição
@@ -138,27 +180,121 @@
     }
 
     /* ===========================================================
+       CALCULAR VALOR TOTAL
+    =========================================================== */
+    function calcularValorTotal(produtosIds) {
+        if (!produtosIds || !Array.isArray(produtosIds) || produtosIds.length === 0) {
+            return "R$ 0,00";
+        }
+
+        let total = 0;
+        produtosIds.forEach(id => {
+            const produto = produtosComPrecos.find(p => p.id == id);
+            if (produto && produto.preco) {
+                total += parseFloat(produto.preco);
+            }
+        });
+
+        return total.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+    }
+
+    /* ===========================================================
+       FORMATAR STATUS
+    =========================================================== */
+    function formatarStatus(status) {
+        if (!status) status = "PENDENTE";
+
+        const statusUpper = status.toUpperCase();
+        const badgeClass = statusUpper === "CONCLUÍDO" || statusUpper === "CONCLUIDO"
+            ? "status-concluido"
+            : "status-pendente";
+
+        const statusText = statusUpper === "CONCLUIDO" ? "CONCLUÍDO" : statusUpper;
+
+        return `<span class="status-badge ${badgeClass}">${statusText}</span>`;
+    }
+
+    /* ===========================================================
        LISTAR AGENDAMENTOS
     =========================================================== */
     async function loadAgendamentos() {
         const data = await fetch(api + "/agendamentos").then(r => r.json());
 
-        agendamentosTable.innerHTML = data.map(a => `
-            <tr>
-                <td>${a.id}</td>
-                <td>${a.cliente}</td>
-                <td>${a.profissional}</td>
-                <td>${a.pagamento}</td>
-                <td>${(a.produtos || []).join(", ")}</td>
-                <td>${formatarData(a.dataAgendamento)}</td>
-                <td>${formatarData(a.dataCadastro)}</td>
-                <td>
-                    <i class="bi bi-pencil-square edit-btn icon-action"
-                        data-agendamento='${JSON.stringify(a)}'></i>
-                    <i class="bi bi-trash3 icon-action" onclick="excluirAgendamento(${a.id})"></i>
-                </td>
-            </tr>
-        `).join("");
+        agendamentosTable.innerHTML = data.map(a => {
+            // Extrair IDs dos produtos para cálculo
+            let produtosIds = [];
+            if (a.produtosIds && Array.isArray(a.produtosIds)) {
+                produtosIds = a.produtosIds;
+            } else if (a.produtos && Array.isArray(a.produtos)) {
+                // Tentar mapear nomes para IDs
+                produtosIds = a.produtos.map(nomeProduto => {
+                    const produto = produtosComPrecos.find(p => p.descricao === nomeProduto);
+                    return produto ? produto.id : null;
+                }).filter(id => id !== null);
+            }
+
+            // Calcular valor total
+            const valorTotal = calcularValorTotal(produtosIds);
+
+            // Determinar se pode marcar como concluído (apenas se não estiver concluído)
+            const podeMarcarConcluido = a.status !== "CONCLUÍDO" && a.status !== "CONCLUIDO";
+
+            return `
+                <tr>
+                    <td>${a.id}</td>
+                    <td>${a.cliente}</td>
+                    <td>${a.profissional}</td>
+                    <td>${a.pagamento}</td>
+                    <td>${(a.produtos || []).join(", ")}</td>
+                    <td>${valorTotal}</td>
+                    <td>${formatarData(a.dataAgendamento)}</td>
+                    <td>${formatarStatus(a.status)}</td>
+                    <td>${formatarData(a.dataCadastro)}</td>
+                    <td>
+                        <i class="bi bi-pencil-square edit-btn icon-action text-warning"
+                            data-agendamento='${JSON.stringify(a)}'></i>
+                        ${podeMarcarConcluido ?
+                            `<i class="bi bi-check-circle icon-action text-success"
+                                onclick="marcarComoConcluido(${a.id})"
+                                title="Marcar como concluído"></i>` :
+                            ''}
+                        <i class="bi bi-trash3 icon-action text-danger" onclick="excluirAgendamento(${a.id})"></i>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+    }
+
+    /* ===========================================================
+       MARCAR AGENDAMENTO COMO CONCLUÍDO
+    =========================================================== */
+    async function marcarComoConcluido(id) {
+        if (!confirm("Deseja marcar este agendamento como CONCLUÍDO?")) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${api}/agendamentos/status/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                alert("Agendamento marcado como CONCLUÍDO com sucesso!");
+                loadAgendamentos();
+            } else {
+                const errorText = await response.text();
+                alert("Erro ao atualizar status: " + errorText);
+            }
+        } catch (error) {
+            console.error("Erro:", error);
+            alert("Erro ao conectar com o servidor.");
+        }
     }
 
     /* ===========================================================
@@ -179,6 +315,11 @@
         e.preventDefault();
 
         const selectedProducts = Array.from(agProdutos.selectedOptions).map(opt => Number(opt.value));
+
+        if (selectedProducts.length === 0) {
+            alert("Selecione pelo menos um produto");
+            return;
+        }
 
         const dataJS = agData._flatpickr.selectedDates[0];
 
@@ -235,7 +376,13 @@
         editAgPag.value = a.pagamentoId || "";
         editAgProf.value = a.profissionalId || "";
 
-        editAgData._flatpickr.setDate(a.dataAgendamento.substring(0, 16));
+        // Mostrar status no modal
+        document.getElementById("editAgStatus").textContent =
+            a.status === "CONCLUIDO" ? "CONCLUÍDO" : (a.status || "PENDENTE");
+
+        if (a.dataAgendamento) {
+            editAgData._flatpickr.setDate(a.dataAgendamento.substring(0, 16));
+        }
 
         new bootstrap.Modal(modalAgendamento).show();
     }
@@ -277,6 +424,20 @@
     }
 
     /* ===========================================================
+       LIMPAR CAMPOS DO MODAL DE EDIÇÃO AO FECHAR
+    =========================================================== */
+    document.getElementById('modalAgendamento').addEventListener('hidden.bs.modal', function () {
+        editAgId.value = "";
+        editAgCli.innerHTML = "";
+        editAgPag.value = "";
+        editAgProf.value = "";
+        editAgProdutos.innerHTML = "";
+        document.getElementById("editAgStatus").textContent = "PENDENTE";
+        if (editAgData._flatpickr) editAgData._flatpickr.clear();
+        else editAgData.value = "";
+    });
+
+    /* ===========================================================
        INICIALIZAR
     =========================================================== */
     carregarSelects().then(() => {
@@ -301,7 +462,6 @@
         });
     });
 </script>
-
 
 </body>
 </html>
